@@ -37,8 +37,7 @@ export default class StatLine extends React.Component {
         if (stat1 > stat2) {
             statClass1 = 'higher-stat';
             statClass2 = 'lower-stat';
-        }
-        else if (stat1 < stat2) {
+        } else if (stat1 < stat2) {
             statClass1 = 'lower-stat';
             statClass2 = 'higher-stat';
         }
