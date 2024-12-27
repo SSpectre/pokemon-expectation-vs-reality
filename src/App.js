@@ -1,6 +1,5 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import './App.css';
 import PokemonAdapter from './PokemonAdapter';
 import StatLine from './StatLine';
 import pLimit from 'p-limit';
