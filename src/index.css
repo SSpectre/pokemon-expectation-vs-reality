@@ -11,3 +11,59 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+h1 {
+  text-align: center;
+}
+
+img.pokemon-img, img.pokemon-img-mobile {
+  display: block;
+  object-fit:contain;
+}
+
+img.pokemon-img {
+  height: 300px;
+  width: 300px;
+}
+
+img.pokemon-img-mobile {
+  height: 150px;
+  width: 150px;
+}
+
+table {
+  margin: auto;
+  width: auto;
+  text-align: center;
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+th.line-break, td.line-break {
+  padding-bottom: 0.83em;
+}
+
+td.higher-stat {
+  color:darkgreen;
+}
+
+td.lower-stat {
+  color:darkred;
+}
+
+td.visible {
+  visibility: visible;
+}
+
+td.invisible {
+  visibility: hidden;
+}
+
+button {
+  margin: 10px;
+  font-size: 15px;
+}
+
+#end-buttons {
+  text-align: center;
+}

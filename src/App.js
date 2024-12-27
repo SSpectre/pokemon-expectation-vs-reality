@@ -1,6 +1,7 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import './App.css';
+import StatLine from './StatLine';
 import pLimit from 'p-limit';
 
 export default class App extends React.Component {
@@ -164,11 +165,38 @@ export default class App extends React.Component {
 			}
 		}
 
+		for (const pokemon of filteredPokemon) {
+			//capitalize first letter of pokemon's name
+			pokemon.name = pokemon.name.replace(/(^\w{1})|(-\w{1})/g, letter => letter.toUpperCase());
+
+			//fix specific pokemon names with non-alphanumeric characters that don't appear in the api
+			pokemon.name = pokemon.name.replace(/fetchd/g, 'fetch\'d');
+			pokemon.name = pokemon.name.replace(/Mr-/g, 'Mr. ');
+			pokemon.name = pokemon.name.replace(/-Jr/g, ' Jr.');
+			pokemon.name = pokemon.name.replace(/Flabebe/g, 'Flab\xE9b\xE9');
+			pokemon.name = pokemon.name.replace(/Type-/g, 'Type: ');
+			pokemon.name = pokemon.name.replace(/mo-O/g, 'mo-o');
+			pokemon.name = pokemon.name.replace(/Tapu-/g, 'Tapu ');
+			pokemon.name = pokemon.name.replace(/-10/g, '-10%');
+			pokemon.name = pokemon.name.replace(/-50/g, '-50%');
+			pokemon.name = pokemon.name.replace(/-Pau/g, '-Pa\'u');
+			pokemon.name = pokemon.name.replace(/Great-/g, 'Great ');
+			pokemon.name = pokemon.name.replace(/Scream-/g, 'Scream ');
+			pokemon.name = pokemon.name.replace(/Brute-/g, 'Brute ');
+			pokemon.name = pokemon.name.replace(/Flutter-/g, 'Flutter ');
+			pokemon.name = pokemon.name.replace(/Slither-/g, 'Slither ');
+			pokemon.name = pokemon.name.replace(/Sandy-/g, 'Sandy ');
+			pokemon.name = pokemon.name.replace(/Roaring-/g, 'Roaring ');
+			pokemon.name = pokemon.name.replace(/Walking-/g, 'Walking ');
+			pokemon.name = pokemon.name.replace(/Gouging-/g, 'Gouging ');
+			pokemon.name = pokemon.name.replace(/Raging-/g, 'Raging ');
+			pokemon.name = pokemon.name.replace(/Iron-/g, 'Iron ');
+		}
+
 		return filteredPokemon;
 	}
 
 	async selectNewPokemon() {
-		console.log(this.state.pokemonList);
 		let random1 = Math.floor(Math.random() * this.state.pokemonList.length);
 		let random2 = Math.floor(Math.random() * this.state.pokemonList.length);
 
@@ -194,39 +222,69 @@ export default class App extends React.Component {
 
 	render() {
 		let loaded = this.state.currentPokemon1 && this.state.currentPokemon2;
-		let selection;
+		let content;
 
 		if (loaded) {
 			let imageUrl1 = this.getImageUrl(this.state.currentPokemon1);
 			let imageUrl2 = this.getImageUrl(this.state.currentPokemon2);
 			let imageClassName = isMobile ? 'pokemon-img-mobile' : 'pokemon-img';
+			let stats = ['HP', 'Attack', 'Defense', 'Special Attack', 'Special Defense', 'Speed'];
 
-		 	selection = (
+		 	content = (
 				<div>
-					<div>
-						<img
-							className={imageClassName}
-							src={imageUrl1}
-							alt={this.state.currentPokemon1.name}
-						/>
-						<img
-							className={imageClassName}
-							src={imageUrl2}
-							alt={this.state.currentPokemon2.name}
-						/>
+					<table>
+						<thead>
+							<tr>
+								<th>
+									<img
+										className={imageClassName}
+										src={imageUrl1}
+										alt={this.state.currentPokemon1.name}
+									/>
+								</th>
+								<th></th>
+								<th>
+									<img
+										className={imageClassName}
+										src={imageUrl2}
+										alt={this.state.currentPokemon2.name}
+									/>
+								</th>
+							</tr>
+							<tr className='full-width'>
+								<th className='line-break' colSpan='3'>
+									Which of these Pokémon looks like it should have higher...
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{stats.map((stat, i) => <StatLine
+								key={stat}
+								index={i}
+								name={stat}
+								pokemon1={this.state.currentPokemon1}
+								pokemon2={this.state.currentPokemon2}
+							/>)}
+						</tbody>
+					</table>
+					<div id='end-buttons'>
+						<button>Community Rankings</button>
+						<button onClick={this.selectNewPokemon}>
+							Compare more Pokémon
+						</button>
 					</div>
 				</div>
 			);
 		} else {
 			let percentage = Math.floor((this.state.currentLoadingSteps / this.state.totalLoadingSteps) * 100);
-			selection = (
+			content = (
 				<h1>Loading ({percentage}%)...</h1>
 			);
 		}
 
 		return (
 			<div>
-				{selection}
+				{content}
 			</div>
 		);
 	}
