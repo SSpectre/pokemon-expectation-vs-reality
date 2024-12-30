@@ -1,8 +1,6 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import PokemonAdapter from './PokemonAdapter';
 import StatLine from './StatLine';
-import pLimit from 'p-limit';
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -10,8 +8,6 @@ export default class App extends React.Component {
 
 		this.state = {
 			useDBForImages: false,
-			totalLoadingSteps: 1,
-			currentLoadingSteps: 0,
 			pokemonList: [],
 			currentPokemon1: null,
 			currentPokemon2: null
@@ -22,59 +18,21 @@ export default class App extends React.Component {
 
 	componentDidMount() {
 		(async () => {
-			//fetch urls to pokemon objects from apis
-			const json = await this.fetchJson('https://pokeapi.co/api/v2/pokemon?limit=2000', false);
+			let json = await fetch("/get")
+			let result = await json.json();
 			this.setState({
-				totalLoadingSteps: json.count
-			});
-			const pokemonUrls = await json.results;
-
-			//limit to 400 simultaneous API requests
-			const limit = pLimit(400);
-
-			const pokemonList = await Promise.all(
-				pokemonUrls.map(async (pokemon) => {
-					return await limit(() => this.fetchJson(pokemon.url, true));
-				})
-			);
-			this.setState({
-				pokemonList: pokemonList,
+				pokemonList: result
 			});
 
-			let useDB = this.state.useDBForImages;
-			let filteredPokemon = PokemonAdapter.performAllActions(pokemonList, useDB)
-			this.setState({
-				pokemonList: filteredPokemon,
-			});
-
-			//this.state.pokemonList doesn't populate unless you wait some amount of time for reason
 			setTimeout(this.selectNewPokemon, 1);
 		})();
 	}
 
-	fetchJson(url, loadingStep) {
-		let response = fetch(url)
-		.then(
-			(result) => {
-				if (loadingStep) {
-					this.setState(prevState => {
-						return {currentLoadingSteps: prevState.currentLoadingSteps + 1};
-					});
-				}
-
-				const json = result.json();
-				return json;
-			}
-		);
-
-		return response;
-	}
-
-	async selectNewPokemon() {
+	selectNewPokemon() {
 		let random1 = Math.floor(Math.random() * this.state.pokemonList.length);
 		let random2 = Math.floor(Math.random() * this.state.pokemonList.length);
 
-		await this.setState(prevState => {
+		this.setState(prevState => {
 			return {
 				currentPokemon1: prevState.pokemonList[random1],
 				currentPokemon2: prevState.pokemonList[random2]
@@ -150,9 +108,8 @@ export default class App extends React.Component {
 				</div>
 			);
 		} else {
-			let percentage = Math.floor((this.state.currentLoadingSteps / this.state.totalLoadingSteps) * 100);
 			content = (
-				<h1>Loading ({percentage}%)...</h1>
+				<h1>Loading...</h1>
 			);
 		}
 

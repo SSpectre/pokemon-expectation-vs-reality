@@ -9,7 +9,7 @@ export default class StatLine extends React.Component {
         this.state = {
             statClass1: classes.class1,
             statClass2: classes.class2,
-            visibleStats: false
+            selected: false
         };
 
         this.selectOption = this.selectOption.bind(this);
@@ -22,7 +22,7 @@ export default class StatLine extends React.Component {
             this.setState({
                 statClass1: classes.class1,
                 statClass2: classes.class2,
-                visibleStats: false
+                selected: false
             });
         }
     }
@@ -52,7 +52,7 @@ export default class StatLine extends React.Component {
 
     selectOption() {
         this.setState({
-            visibleStats: true
+            selected: true
         });
     }
 
@@ -62,27 +62,27 @@ export default class StatLine extends React.Component {
         return (
             <>
                 <tr>
-                    <td className={this.state.statClass1 + (this.state.visibleStats ? ' visible' : ' invisible')}>
+                    <td className={this.state.statClass1 + (this.state.selected ? ' visible' : ' invisible')}>
                         {this.props.pokemon1.stats[this.props.index]['base_stat']}
                     </td>
                     <td>...{this.props.name}?</td>
-                    <td className={this.state.statClass2 + (this.state.visibleStats ? ' visible' : ' invisible')}>
+                    <td className={this.state.statClass2 + (this.state.selected ? ' visible' : ' invisible')}>
                         {this.props.pokemon2.stats[this.props.index]['base_stat']}
                     </td>
                 </tr>
                 <tr>
                     <td className='line-break'>
-                        <button id = {'button-' + this.props.index + '-1'} onClick={this.selectOption}>
+                        <button id = {'button-' + this.props.index + '-1'} onClick={this.selectOption} disabled={this.state.selected}>
                             {this.props.pokemon1.name}
                         </button>
                     </td>
                     <td className='line-break'>
-                        <button id = {'button-' + this.props.index + '-unsure'} onClick={this.selectOption}>
+                        <button id = {'button-' + this.props.index + '-unsure'} onClick={this.selectOption} disabled={this.state.selected}>
                             I'm not sure
                         </button>
                     </td>
                     <td className='line-break'>
-                        <button id = {'button-' + this.props.index + '-2'} onClick={this.selectOption}>
+                        <button id = {'button-' + this.props.index + '-2'} onClick={this.selectOption} disabled={this.state.selected}>
                             {this.props.pokemon2.name}
                         </button>
                     </td>
