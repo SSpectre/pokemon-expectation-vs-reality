@@ -18,7 +18,7 @@ export default class App extends React.Component {
 
 	componentDidMount() {
 		(async () => {
-			let json = await fetch("/get")
+			let json = await fetch("/get");
 			let result = await json.json();
 			this.setState({
 				pokemonList: result
@@ -61,6 +61,7 @@ export default class App extends React.Component {
 			let imageUrl2 = this.getImageUrl(this.state.currentPokemon2);
 			let imageClassName = isMobile ? 'pokemon-img-mobile' : 'pokemon-img';
 			let stats = ['HP', 'Attack', 'Defense', 'Special Attack', 'Special Defense', 'Speed'];
+			let dbStats = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed'];
 
 		 	content = (
 				<div>
@@ -94,13 +95,18 @@ export default class App extends React.Component {
 								key={stat}
 								index={i}
 								name={stat}
+								dbFormattedName={dbStats[i]}
 								pokemon1={this.state.currentPokemon1}
 								pokemon2={this.state.currentPokemon2}
 							/>)}
 						</tbody>
 					</table>
 					<div id='end-buttons'>
-						<button>Community Rankings</button>
+						<button onClick={() => {
+							fetch("/test");
+						}}>
+							Community Rankings
+						</button>
 						<button onClick={this.selectNewPokemon}>
 							Compare more Pokémon
 						</button>

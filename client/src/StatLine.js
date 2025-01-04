@@ -50,10 +50,23 @@ export default class StatLine extends React.Component {
         return classes;
     }
 
-    selectOption() {
+    selectOption(result) {
         this.setState({
             selected: true
         });
+
+        fetch("/update", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id1: this.props.pokemon1.id,
+                id2: this.props.pokemon2.id,
+                stat: this.props.dbFormattedName,
+                result: result
+            })
+        })
     }
 
     render() {
@@ -72,17 +85,17 @@ export default class StatLine extends React.Component {
                 </tr>
                 <tr>
                     <td className='line-break'>
-                        <button id = {'button-' + this.props.index + '-1'} onClick={this.selectOption} disabled={this.state.selected}>
+                        <button id = {'button-' + this.props.index + '-1'} onClick={() => {this.selectOption(1)}} disabled={this.state.selected}>
                             {this.props.pokemon1.name}
                         </button>
                     </td>
                     <td className='line-break'>
-                        <button id = {'button-' + this.props.index + '-unsure'} onClick={this.selectOption} disabled={this.state.selected}>
+                        <button id = {'button-' + this.props.index + '-unsure'} onClick={() => {this.selectOption(0)}} disabled={this.state.selected}>
                             I'm not sure
                         </button>
                     </td>
                     <td className='line-break'>
-                        <button id = {'button-' + this.props.index + '-2'} onClick={this.selectOption} disabled={this.state.selected}>
+                        <button id = {'button-' + this.props.index + '-2'} onClick={() => {this.selectOption(2)}} disabled={this.state.selected}>
                             {this.props.pokemon2.name}
                         </button>
                     </td>
