@@ -40,10 +40,26 @@ export default class DatabaseAPI {
         });
     }
 
+    getAllPokemon(sortingStat) {
+        return new Promise((resolve, reject) => {
+            let sql = `SELECT id, name, hp, attack, defense, special_attack, special_defense, speed
+                FROM pokemon
+                ORDER BY ${sortingStat} DESC, hp + attack + defense + special_attack + special_defense + speed DESC`;
+
+            this.db.all(sql, (err, rows) => {
+                if(err)
+                    reject(err);
+                else
+                    resolve(rows);
+            });
+        });
+    }
+
     getPokemonStatElo(id, stat, matchNumber, reachedThreshold) {
         return new Promise((resolve, reject) => {
             let sql = `SELECT ${stat}, ${matchNumber}, ${reachedThreshold}
-                FROM pokemon WHERE id = ${id}`;
+                FROM pokemon
+                WHERE id = ${id}`;
 
             this.db.get(sql, (err, rows) => {
                 if(err)

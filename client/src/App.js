@@ -1,6 +1,7 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 import StatLine from './StatLine';
+import RankingTable from './RankingTable';
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -9,6 +10,7 @@ export default class App extends React.Component {
 		this.state = {
 			useDBForImages: false,
 			pokemonList: [],
+			sortedLists: {},
 			currentPokemon1: null,
 			currentPokemon2: null
 		}
@@ -21,7 +23,8 @@ export default class App extends React.Component {
 			let json = await fetch("/get");
 			let result = await json.json();
 			this.setState({
-				pokemonList: result
+				pokemonList: result.mainList,
+				sortedLists: result.sortedLists
 			});
 
 			setTimeout(this.selectNewPokemon, 1);
@@ -102,15 +105,15 @@ export default class App extends React.Component {
 						</tbody>
 					</table>
 					<div id='end-buttons'>
-						<button onClick={() => {
-							fetch("/test");
-						}}>
-							Community Rankings
-						</button>
 						<button onClick={this.selectNewPokemon}>
 							Compare more Pokémon
 						</button>
 					</div>
+					<RankingTable
+						stats={stats}
+						dbFormattedStats={dbStats}
+						sortedLists={this.state.sortedLists}
+					/>
 				</div>
 			);
 		} else {

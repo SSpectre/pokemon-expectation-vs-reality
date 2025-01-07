@@ -66,12 +66,10 @@ export default class StatLine extends React.Component {
                 stat: this.props.dbFormattedName,
                 result: result
             })
-        })
+        });
     }
 
     render() {
-        
-
         return (
             <>
                 <tr>

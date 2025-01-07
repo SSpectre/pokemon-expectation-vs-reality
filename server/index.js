@@ -13,11 +13,16 @@ let totalLoadingSteps = 1;
 let currentLoadingSteps = 0;
 
 let pokemonList = [];
+let sortedLists = {};
 
 app.use(express.json());
 
 app.get("/get", (req, res) => {
-    res.json(pokemonList);
+	let response = {
+		mainList: pokemonList,
+		sortedLists: sortedLists
+	}
+    res.json(response);
 });
 
 app.put("/update", async (req, res) => {
@@ -74,10 +79,8 @@ app.put("/update", async (req, res) => {
 	res.send({"message": "Success"});
 })
 
-app.get("/test", async (req, res) => {
-	let random = Math.floor(Math.random() * pokemonList.length);
-
-    let result = await db.getPokemonById(random);
+app.get("/ranking", async (req, res) => {
+    let result = await db.getAllPokemon(req.query.stat);
 	res.json(result);
 });
 
@@ -101,6 +104,13 @@ app.listen(PORT, function() {
 
 		db.addPokemon(pokemonList);
 
+		let apiStats = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'];
+		for (const stat of apiStats) {
+			let sorted = getSortedList(pokemonList, stat);
+			let idList = sorted.map((pokemon) => pokemon.id);
+			sortedLists[stat] = idList;
+		}
+
 		console.log("Listening on port " + PORT);
 	})();
 });
@@ -122,6 +132,24 @@ function fetchJson(url, loadingStep) {
 	return response;
 }
 
+function getSortedList(list, stat) {
+	return list.toSorted((a, b) => {
+		let aStat = a.stats.find((element) => element.stat.name == stat);
+		let bStat = b.stats.find((element) => element.stat.name == stat);
+
+		let aTotal = 0;
+		for (const stat of a.stats) {
+			aTotal += stat.base_stat;
+		}
+		let bTotal = 0;
+		for (const stat of b.stats) {
+			bTotal += stat.base_stat;
+		}
+
+		return bStat.base_stat - aStat.base_stat || bTotal - aTotal;
+	});
+}
+
 function calculateKValue(matchNumber, reachedThreshold) {
 	let k;
 	if (matchNumber >= 30) {
@@ -138,7 +166,8 @@ function calculateKValue(matchNumber, reachedThreshold) {
 }
 
 function calculateNewElo(elo, k, score, expected) {
-	return elo + k * (score - expected);
+	let result = elo + k * (score - expected);
+	return Math.round(result);
 }
 
 function checkKThreshold(elo) {

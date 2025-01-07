@@ -39,6 +39,54 @@ table {
   font-weight: bold;
 }
 
+.ranking-table, .ranking-header-cell, .ranking-body-cell {
+  border: 1px solid #ccc;
+  border-collapse: separate;
+  border-spacing: 0
+}
+
+.ranking-table {
+  border-spacing: 0;
+  margin-bottom: 2em;
+}
+
+.ranking-header-cell, .ranking-body-cell {
+  padding: 5px;
+}
+
+.ranking-header-cell {
+  background-color: #ddd;
+  color: #212121
+}
+
+.ranking-body-cell {
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+td.name {
+  text-align: left;
+}
+
+td.change {
+  text-align: center;
+}
+
+div.change {
+  display: inline-block;
+  width: 55px;
+  text-align: left;
+}
+
+table caption {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+tbody.ranking-body tr:nth-child(odd) {
+  background: #eee
+}
+
 th.line-break, td.line-break {
   padding-bottom: 0.83em;
 }
@@ -66,4 +114,16 @@ button {
 
 #end-buttons {
   text-align: center;
+}
+
+.ranking-parent {
+  text-align: center;
+}
+
+label {
+  margin-right: 0.3333em;
+}
+
+select {
+  margin-bottom: 1.5em;
 }
