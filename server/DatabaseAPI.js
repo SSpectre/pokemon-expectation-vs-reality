@@ -40,11 +40,15 @@ export default class DatabaseAPI {
         });
     }
 
-    getAllPokemon(sortingStat) {
+    getAllPokemon(sortingStat, ascending) {
         return new Promise((resolve, reject) => {
+            let order = 'DESC';
+            if (ascending) {
+                order = 'ASC';
+            }
             let sql = `SELECT id, name, hp, attack, defense, special_attack, special_defense, speed
                 FROM pokemon
-                ORDER BY ${sortingStat} DESC, hp + attack + defense + special_attack + special_defense + speed DESC`;
+                ORDER BY ${sortingStat} ${order}, hp + attack + defense + special_attack + special_defense + speed ${order}`;
 
             this.db.all(sql, (err, rows) => {
                 if(err)

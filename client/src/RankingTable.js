@@ -16,11 +16,13 @@ export default class RankingTable extends React.Component {
                 special_defense: 0,
                 speed: 0
             }],
-            realRank: [0]
-        };
+            realRank: [0],
+            ascending: false
+        }
 
         this.getRanking = this.getRanking.bind(this);
         this.selectStat = this.selectStat.bind(this);
+        this.reverseList = this.reverseList.bind(this);
 	}
 
     componentDidMount() {
@@ -31,8 +33,11 @@ export default class RankingTable extends React.Component {
 
     getRanking(stat) {
         (async () => {
-            let json = await fetch(`/ranking?stat=${stat}`);
+            let asc = this.state.ascending ? 1 : '';
+            let json = await fetch(`/ranking?stat=${stat}&asc=${asc}`);
             let result = await json.json();
+
+            stat = stat.replace('_', '-');
 
             let real = result.map((pokemon, i) => {
                 return this.props.sortedLists[stat].indexOf(pokemon.id);
@@ -50,11 +55,24 @@ export default class RankingTable extends React.Component {
         this.getRanking(stat);
     }
 
+    reverseList(event) {
+        this.setState(
+            prevState => ({
+                pokemonList: prevState.pokemonList.toReversed(),
+                realRank: prevState.realRank.toReversed(),
+                ascending: event.target.checked
+            })
+        );
+    }
+
     render() {
         let pokemonList = this.state.pokemonList;
         let realRank = this.state.realRank;
         let stats = this.props.stats;
         let dbStats = this.props.dbFormattedStats;
+        let imageList = this.props.imageList;
+
+        let loaded = pokemonList.length > 1;
 
         return (
             <div className='ranking-parent'>
@@ -67,6 +85,8 @@ export default class RankingTable extends React.Component {
                         </option>
                     ))}
                 </select>
+                <label htmlFor='ascending'>Ascending?</label>
+                <input type='checkbox' id='ascending' name='ascending' onClick={this.reverseList} />
                 <table className='ranking-table'>
                     <thead className='ranking-header'>
                         <tr>
@@ -78,18 +98,43 @@ export default class RankingTable extends React.Component {
                     </thead>
                     <tbody className='ranking-body'>
                         {pokemonList.map((pokemon, i) => {
-                            let change = realRank[i] - i;
+                            let adjustedIndex = i;
+                            if (this.state.ascending) {
+                                adjustedIndex = pokemonList.length - (i + 1);
+                            }
+
+                            let change = realRank[i] - adjustedIndex;
                             let positive = change >= 0;
+
+                            let image = '';
+                            if (loaded) {
+                                let imageObject = imageList.find((element) => element.id === pokemon.id);
+                                let imageUrl;
+                                if (imageObject) {
+                                    imageUrl = imageObject.image;
+                                } else {
+                                    imageUrl = null;
+                                }
+                                
+                                image = (<img src={imageUrl} alt={pokemon.name} />);
+                            }
 
                             return (
                                 <tr key={pokemon.id}>
-                                    <td className='ranking-body-cell'>{i+1}</td>
-                                    <td className='ranking-body-cell name'>{pokemon.name}</td>
+                                    <td className='ranking-body-cell'>{adjustedIndex+1}</td>
+                                    <td className='ranking-body-cell name'>
+                                        <figure>
+                                            {image}
+                                            <figcaption>{pokemon.name}</figcaption>
+                                        </figure>
+                                    </td>
                                     <td className='ranking-body-cell'>{realRank[i]+1}</td>
                                     <td className={'ranking-body-cell change' + (positive ? ' higher-stat' : ' lower-stat')}>
                                         <div className='change'>
-                                            {positive ? <FaArrowUp /> : <FaArrowDown />}
-                                            {' ' + Math.abs(change)}
+                                            <span className='change'>
+                                                {positive ? <FaArrowUp /> : <FaArrowDown />}
+                                                <span className='change-amount'>{' ' + Math.abs(change)}</span>
+                                            </span>
                                         </div>
                                     </td>
                                 </tr>

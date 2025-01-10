@@ -22,6 +22,7 @@ export default class App extends React.Component {
 		(async () => {
 			let json = await fetch("/get");
 			let result = await json.json();
+
 			this.setState({
 				pokemonList: result.mainList,
 				sortedLists: result.sortedLists
@@ -43,28 +44,22 @@ export default class App extends React.Component {
 		});
 	}
 
-	getImageUrl(pokemon) {
-		let imageUrl;
-		if (this.state.useDBForImages) {
-			imageUrl = 'https://img.pokemondb.net/artwork/' + pokemon.name + '.jpg'
-		} else {
-			let imageBase = pokemon.sprites.other
-			imageUrl = imageBase['official-artwork']['front_default'];
-		}
-
-		return imageUrl;
-	}
-
 	render() {
 		let loaded = this.state.currentPokemon1 && this.state.currentPokemon2;
 		let content;
 
 		if (loaded) {
-			let imageUrl1 = this.getImageUrl(this.state.currentPokemon1);
-			let imageUrl2 = this.getImageUrl(this.state.currentPokemon2);
+			let imageUrl1 = this.state.currentPokemon1.image_url;
+			let imageUrl2 = this.state.currentPokemon2.image_url;
 			let imageClassName = isMobile ? 'pokemon-img-mobile' : 'pokemon-img';
 			let stats = ['HP', 'Attack', 'Defense', 'Special Attack', 'Special Defense', 'Speed'];
 			let dbStats = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed'];
+			let imageList = this.state.pokemonList.map((pokemon) => {
+				return {
+					id: pokemon.id,
+					image: pokemon.image_url
+				}
+			})
 
 		 	content = (
 				<div>
@@ -113,6 +108,7 @@ export default class App extends React.Component {
 						stats={stats}
 						dbFormattedStats={dbStats}
 						sortedLists={this.state.sortedLists}
+						imageList={imageList}
 					/>
 				</div>
 			);

@@ -31,6 +31,23 @@ img.pokemon-img-mobile {
   width: 150px;
 }
 
+figure {
+  overflow: auto;
+  display: flex;
+  margin: 0;
+}
+
+figure img {
+  float: left;
+  margin: auto 0.5em auto 0;
+  height: 70px;
+  width: 70px;
+}
+
+figcaption {
+  margin: auto 0;
+}
+
 table {
   margin: auto;
   width: auto;
@@ -76,6 +93,15 @@ div.change {
   display: inline-block;
   width: 55px;
   text-align: left;
+}
+
+span.change {
+  display: inline-flex;
+  align-items: center;
+}
+
+span.change-amount {
+  margin-left: 0.5em;
 }
 
 table caption {
@@ -126,4 +152,5 @@ label {
 
 select {
   margin-bottom: 1.5em;
+  margin-right: 1.5em;
 }

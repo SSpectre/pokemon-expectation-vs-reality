@@ -12,6 +12,8 @@ const db = new DatabaseAPI();
 let totalLoadingSteps = 1;
 let currentLoadingSteps = 0;
 
+let useDBForImages = false;
+
 let pokemonList = [];
 let sortedLists = {};
 
@@ -80,7 +82,7 @@ app.put("/update", async (req, res) => {
 })
 
 app.get("/ranking", async (req, res) => {
-    let result = await db.getAllPokemon(req.query.stat);
+    let result = await db.getAllPokemon(req.query.stat, req.query.asc);
 	res.json(result);
 });
 
@@ -101,6 +103,11 @@ app.listen(PORT, function() {
 		);
 
 		pokemonList = PokemonAdapter.performAllActions(pokemonList, false);
+
+		for (const pokemon of pokemonList) {
+			let imageUrl = getImageUrl(pokemon);
+			pokemon.image_url = imageUrl
+		}
 
 		db.addPokemon(pokemonList);
 
@@ -130,6 +137,18 @@ function fetchJson(url, loadingStep) {
 	);
 
 	return response;
+}
+
+function getImageUrl(pokemon) {
+	let imageUrl;
+	if (useDBForImages) {
+		imageUrl = 'https://img.pokemondb.net/artwork/' + pokemon.name + '.jpg'
+	} else {
+		let imageBase = pokemon.sprites.other
+		imageUrl = imageBase['official-artwork']['front_default'];
+	}
+
+	return imageUrl;
 }
 
 function getSortedList(list, stat) {
