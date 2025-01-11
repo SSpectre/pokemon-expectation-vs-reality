@@ -1,4 +1,13 @@
+/**
+ * Static class for making alterations to the Pokemon list retrieved from PokeAPI so they will fit with other systems
+ */
 export default class PokemonAdapter {
+	/**
+	 * Performs all filtering and formatting steps at once.
+	 * @param {Object[]} list The array of Pokemon to be updated.
+	 * @param {booolean} useDBForImages Whether to use PokemonDB or PokeAPI for image. DB uses jpg instead of png, but PokeAPI has more complete and up-to-date art.
+	 * @returns {Object[]} The updated list.
+	 */
     static performAllActions(list, useDBForImages) {
         let result = this.filterPokemon(list, useDBForImages);
         result = this.formatFormNames(result, useDBForImages);
@@ -7,11 +16,16 @@ export default class PokemonAdapter {
         return result;
     }
 
+	/**
+	 * Filters out Pokemon forms with no artwork and no or minimal changes.
+	 * @param {Object[]} originalList The array of Pokemon objects to be filtered.
+	 * @param {boolean} useDBForImages Whether to use PokemonDB or PokeAPI for image. DB uses jpg instead of png, but PokeAPI has more complete and up-to-date art.
+	 * @returns {Object[]} The filtered list.
+	 */
     static filterPokemon(originalList, useDBForImages) {
         let filteredPokemon;
 
 		if (useDBForImages) {
-			//filter out forms that have no pokemondb artwork or only minor differences
 			filteredPokemon = originalList.filter((value, index, arr) => {
 				let tempName = value.name;
 				let result = true;
@@ -42,7 +56,6 @@ export default class PokemonAdapter {
 				return result;
 			})
 		} else {
-			//filter out forms that have no artwork or only minor differences
 			filteredPokemon = originalList.filter((value, index, arr) => {
 				let tempName = value.name;
 				let result = true;
@@ -69,9 +82,14 @@ export default class PokemonAdapter {
         return filteredPokemon;
     }
 
+	/**
+	 * Formats Pokemon form names to simplify/complete them and match the naming conventions of other systems.
+	 * @param {Object[]} list The array of Pokemon objects to be formatted.
+	 * @param {*} useDBForImages Whether to use PokemonDB or PokeAPI for image. DB uses jpg instead of png, but PokeAPI has more complete and up-to-date art.
+	 * @returns {Object[]} The formatted list.
+	 */
     static formatFormNames(list, useDBForImages) {
         if (useDBForImages) {
-            //change form names to how pokemondb formats them
 			for (const pokemon of list) {
 				pokemon.name = pokemon.name.replace(/gmax/g, 'gigantamax');
 				pokemon.name = pokemon.name.replace(/alola/g, 'alolan');
@@ -94,7 +112,6 @@ export default class PokemonAdapter {
 				pokemon.name = pokemon.name.replace(/paldean-aqua-breed$/g, 'aqua');
 			}
         } else {
-            //change form names to improve formatting
 			for (const pokemon of list) {
 				pokemon.name = pokemon.name.replace(/gmax/g, 'gigantamax');
 				pokemon.name = pokemon.name.replace(/-red$/g, '-core');
@@ -112,6 +129,11 @@ export default class PokemonAdapter {
         return list;
     }
 
+	/**
+	 * Capitalizes Pokemon names and re-adds non-alphanumeric characters that don't appear in the API.
+	 * @param {Object[]} list The array of Pokemon to be edited.
+	 * @returns {Object[]} The edited list.
+	 */
     static fixNames(list) {
         for (const pokemon of list) {
 			//capitalize first letter of pokemon's name

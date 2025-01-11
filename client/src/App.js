@@ -3,6 +3,9 @@ import { isMobile } from 'react-device-detect';
 import StatLine from './StatLine';
 import RankingTable from './RankingTable';
 
+/**
+ * The main Component of the app.
+ */
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -32,6 +35,9 @@ export default class App extends React.Component {
 		})();
 	}
 
+	/**
+	 * Selects two random Pokemon to compare.
+	 */
 	selectNewPokemon() {
 		let random1 = Math.floor(Math.random() * this.state.pokemonList.length);
 		let random2 = Math.floor(Math.random() * this.state.pokemonList.length);
@@ -45,6 +51,7 @@ export default class App extends React.Component {
 	}
 
 	render() {
+		//display a loading screen if Pokemon haven't been selected yet
 		let loaded = this.state.currentPokemon1 && this.state.currentPokemon2;
 		let content;
 
@@ -52,8 +59,12 @@ export default class App extends React.Component {
 			let imageUrl1 = this.state.currentPokemon1.image_url;
 			let imageUrl2 = this.state.currentPokemon2.image_url;
 			let imageClassName = isMobile ? 'pokemon-img-mobile' : 'pokemon-img';
+
+			//database has a separate naming convention from that displayed to the user
 			let stats = ['HP', 'Attack', 'Defense', 'Special Attack', 'Special Defense', 'Speed'];
 			let dbStats = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed'];
+
+			//associate image URLs with the Pokemon IDs so we don't need to pass the entire Pokemon list to the RatingTable
 			let imageList = this.state.pokemonList.map((pokemon) => {
 				return {
 					id: pokemon.id,

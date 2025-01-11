@@ -1,5 +1,8 @@
 import React from 'react'
 
+/**
+ * A component containing the information and logic for comparing a single stat between two Pokemon.
+ */
 export default class StatLine extends React.Component {
     constructor(props) {
 		super(props);
@@ -16,6 +19,7 @@ export default class StatLine extends React.Component {
 	}
 
     componentDidUpdate(prevProps) {
+        //only update if new Pokemon have been chosen
         if (prevProps.pokemon1 !== this.props.pokemon1 || prevProps.pokemon2 !== this.props.pokemon2) {
             let classes = this.initializeStats();
 
@@ -27,6 +31,10 @@ export default class StatLine extends React.Component {
         }
     }
 
+    /**
+     * Compares the stats of the Pokemon to compare and set the CSS class name for the display text accordingly.
+     * @returns {Object} An object specifying the CSS class names.
+     */
     initializeStats() {
         let stat1 = this.props.pokemon1.stats[this.props.index]['base_stat'];
         let stat2 = this.props.pokemon2.stats[this.props.index]['base_stat'];
@@ -50,6 +58,10 @@ export default class StatLine extends React.Component {
         return classes;
     }
 
+    /**
+     * Sends the results of a vote to the server.
+     * @param {number} result Vote result. 1 for left Pokemon winning, 2 for right Pokemon winning, and 0 for tie.
+     */
     selectOption(result) {
         this.setState({
             selected: true

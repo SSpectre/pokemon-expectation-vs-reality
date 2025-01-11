@@ -1,6 +1,9 @@
 import React from 'react';
 import {FaArrowUp, FaArrowDown} from 'react-icons/fa';
 
+/**
+ * A component containing the information and logic for the community ranking table.
+ */
 export default class RankingTable extends React.Component {
     constructor(props) {
 		super(props);
@@ -27,16 +30,22 @@ export default class RankingTable extends React.Component {
 
     componentDidMount() {
 		(async () => {
+            //default stat is HP
             this.getRanking(this.props.dbFormattedStats[0]);
 		})();
 	}
 
+    /**
+     * Retrieves the community ranking for a stat from the server and populates the list of real ranks with the order of the community rank.
+     * @param {string} stat The stat to sort by.
+     */
     getRanking(stat) {
         (async () => {
             let asc = this.state.ascending ? 1 : '';
             let json = await fetch(`/ranking?stat=${stat}&asc=${asc}`);
             let result = await json.json();
 
+            //database replaces spaces with underscores while API uses hyphens
             stat = stat.replace('_', '-');
 
             let real = result.map((pokemon, i) => {
@@ -50,11 +59,19 @@ export default class RankingTable extends React.Component {
         })();
     }
 
+    /**
+     * Handler function for selecting a stat from the dropdown.
+     * @param {Object} event The captured click event.
+     */
     selectStat(event) {
         let stat = event.target.value;
         this.getRanking(stat);
     }
 
+    /**
+     * Handler function for clicking the Ascending checkbox.
+     * @param {Object} event The captured click event.
+     */
     reverseList(event) {
         this.setState(
             prevState => ({
@@ -72,6 +89,7 @@ export default class RankingTable extends React.Component {
         let dbStats = this.props.dbFormattedStats;
         let imageList = this.props.imageList;
 
+        //pokemonList contains a placeholder if loading isn't finished
         let loaded = pokemonList.length > 1;
 
         return (
@@ -100,14 +118,17 @@ export default class RankingTable extends React.Component {
                         {pokemonList.map((pokemon, i) => {
                             let adjustedIndex = i;
                             if (this.state.ascending) {
+                                //reverse the rank if sorting in ascending order
                                 adjustedIndex = pokemonList.length - (i + 1);
                             }
 
                             let change = realRank[i] - adjustedIndex;
                             let positive = change >= 0;
 
+                            //don't display a thumbnail image if the list isn't loaded yet
                             let image = '';
                             if (loaded) {
+                                //associate an image in the list with a Pokemon
                                 let imageObject = imageList.find((element) => element.id === pokemon.id);
                                 let imageUrl;
                                 if (imageObject) {
