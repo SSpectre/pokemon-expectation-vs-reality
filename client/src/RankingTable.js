@@ -42,7 +42,7 @@ export default class RankingTable extends React.Component {
     getRanking(stat) {
         (async () => {
             let asc = this.state.ascending ? 1 : '';
-            let json = await fetch(`/ranking?stat=${stat}&asc=${asc}`);
+            let json = await fetch(`pokemon-expectation-vs-reality/ranking?stat=${stat}&asc=${asc}`);
             let result = await json.json();
 
             //database replaces spaces with underscores while API uses hyphens
