@@ -26,3 +26,5 @@ yarn-error.log*
 
 #Personal Additions
 server/pokemon.db
+server/daemon_express.log
+server/run-express.sh
