@@ -19,7 +19,7 @@ app.use(express.json());
 /**
  * Returns the main list of Pokemon Objects and the lists of IDs sorted by each stat to the client.
  */
-app.get("/get", (req, res) => {
+app.get("/pokemon-expectation-vs-reality/get", (req, res) => {
 	let response = {
 		mainList: pokemonList,
 		sortedLists: sortedLists
@@ -30,7 +30,7 @@ app.get("/get", (req, res) => {
 /**
  * Updates the Elo rating of a single stat for a single Pokemon when a vote is cast from the client. Returns a success message when finished.
  */
-app.put("/update", async (req, res) => {
+app.put("/pokemon-expectation-vs-reality/update", async (req, res) => {
 	const id1 = req.body.id1;
 	const id2 = req.body.id2;
 	const stat = req.body.stat;
@@ -88,7 +88,7 @@ app.put("/update", async (req, res) => {
 /**
  * Queries the database for a list of all Pokemon sorted by the Elo of a single stat and returns the results to the client.
  */
-app.get("/ranking", async (req, res) => {
+app.get("/pokemon-expectation-vs-reality/ranking", async (req, res) => {
     let result = await db.getAllPokemon(req.query.stat, req.query.asc);
 	res.json(result);
 });
