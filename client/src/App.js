@@ -74,18 +74,18 @@ export default class App extends React.Component {
 
 		 	content = (
 				<div>
-					<table>
+					<table className='main-section'>
 						<thead>
 							<tr>
-								<th>
+								<th className='main-section-header'>
 									<img
 										className={imageClassName}
 										src={imageUrl1}
 										alt={this.state.currentPokemon1.name}
 									/>
 								</th>
-								<th></th>
-								<th>
+								<th className='main-section-header'></th>
+								<th className='main-section-header'>
 									<img
 										className={imageClassName}
 										src={imageUrl2}
@@ -94,12 +94,12 @@ export default class App extends React.Component {
 								</th>
 							</tr>
 							<tr className='full-width'>
-								<th className='line-break' colSpan='3'>
+								<th className='main-section-header line-break' colSpan='3'>
 									Which of these Pokémon looks like it should have higher...
 								</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody className='main-section-body'>
 							{stats.map((stat, i) => <StatLine
 								key={stat}
 								index={i}

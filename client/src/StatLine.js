@@ -85,26 +85,26 @@ export default class StatLine extends React.Component {
         return (
             <>
                 <tr>
-                    <td className={this.state.statClass1 + (this.state.selected ? ' visible' : ' invisible')}>
+                    <td className={'main-section-header ' + this.state.statClass1 + (this.state.selected ? ' visible' : ' invisible')}>
                         {this.props.pokemon1.stats[this.props.index]['base_stat']}
                     </td>
-                    <td>...{this.props.name}?</td>
-                    <td className={this.state.statClass2 + (this.state.selected ? ' visible' : ' invisible')}>
+                    <td className='main-section-header'>...{this.props.name}?</td>
+                    <td className={'main-section-header ' + this.state.statClass2 + (this.state.selected ? ' visible' : ' invisible')}>
                         {this.props.pokemon2.stats[this.props.index]['base_stat']}
                     </td>
                 </tr>
                 <tr>
-                    <td className='line-break'>
+                    <td className='main-section-header line-break'>
                         <button id = {'button-' + this.props.index + '-1'} onClick={() => {this.selectOption(1)}} disabled={this.state.selected}>
                             {this.props.pokemon1.name}
                         </button>
                     </td>
-                    <td className='line-break'>
+                    <td className='main-section-header line-break'>
                         <button id = {'button-' + this.props.index + '-unsure'} onClick={() => {this.selectOption(0)}} disabled={this.state.selected}>
                             I'm not sure
                         </button>
                     </td>
-                    <td className='line-break'>
+                    <td className='main-section-header line-break'>
                         <button id = {'button-' + this.props.index + '-2'} onClick={() => {this.selectOption(2)}} disabled={this.state.selected}>
                             {this.props.pokemon2.name}
                         </button>

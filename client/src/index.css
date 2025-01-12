@@ -44,37 +44,32 @@ figcaption {
   margin: auto 0;
 }
 
+table, th, td {
+  text-align: center;
+}
+
 table {
   margin: auto;
   width: auto;
-  text-align: center;
   font-size: 1.25em;
   font-weight: bold;
 }
 
-.ranking-table, .ranking-header-cell, .ranking-body-cell {
-  border: 1px solid #ccc;
-  border-collapse: separate;
-  border-spacing: 0
+.main-section, .main-section-header, .main-section-cell {
+  border: none;
 }
 
-.ranking-table {
-  border-spacing: 0;
-  margin-bottom: 2em;
+.main-section-header {
+  background-color: #fff;
+  color: #000;
 }
 
-.ranking-header-cell, .ranking-body-cell {
-  padding: 5px;
+.main-section-cell {
+  
 }
 
-.ranking-header-cell {
-  background-color: #ddd;
-  color: #212121
-}
-
-.ranking-body-cell {
-  font-size: 0.8em;
-  font-weight: normal;
+.main-section-body tr {
+  background: #fff;
 }
 
 td.name {
@@ -98,19 +93,6 @@ span.change {
 
 span.change-amount {
   margin-left: 0.5em;
-}
-
-table caption {
-  text-align: center;
-  text-transform: uppercase;
-}
-
-tbody.ranking-body tr:nth-child(odd) {
-  background: #eee
-}
-
-th.line-break, td.line-break {
-  padding-bottom: 0.83em;
 }
 
 td.higher-stat {
