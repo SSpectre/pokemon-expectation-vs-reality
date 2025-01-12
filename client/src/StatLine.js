@@ -67,7 +67,7 @@ export default class StatLine extends React.Component {
             selected: true
         });
 
-        fetch("pokemon-expectation-vs-reality/update", {
+        fetch("/pokemon-expectation-vs-reality/update", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"

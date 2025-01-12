@@ -23,7 +23,7 @@ export default class App extends React.Component {
 
 	componentDidMount() {
 		(async () => {
-			let json = await fetch("pokemon-expectation-vs-reality/get");
+			let json = await fetch("/pokemon-expectation-vs-reality/get");
 			let result = await json.json();
 
 			this.setState({
