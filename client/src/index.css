@@ -10,21 +10,25 @@ code {
 
 h1 {
   text-align: center;
-}
-
-img.pokemon-img, img.pokemon-img-mobile {
-  display: block;
-  object-fit:contain;
+  margin-top: 1.4em;
+  margin-bottom: 0.55em;
 }
 
 img.pokemon-img {
-  height: 300px;
-  width: 300px;
+  display: block;
+  object-fit:contain;
+  margin: auto;
+  height: 100%;
+  max-height: 300px;
+  width: 100%;
+  max-width: 300px;
 }
 
-img.pokemon-img-mobile {
-  height: 150px;
-  width: 150px;
+img.ranking-img {
+  height: 100%;
+  max-height: 70px;
+  width: 100%;
+  max-width: 70px;
 }
 
 figure {
@@ -36,8 +40,6 @@ figure {
 figure img {
   float: left;
   margin: auto 0.5em auto 0;
-  height: 70px !important;
-  width: 70px !important;
 }
 
 figcaption {
@@ -51,12 +53,21 @@ table, th, td {
 table {
   margin: auto;
   width: auto;
-  font-size: 1.25em;
+  font-size: 1em;
   font-weight: bold;
+}
+
+th, td {
+  padding: 0.2em;
 }
 
 .main-section, .main-section-header, .main-section-cell {
   border: none;
+}
+
+.main-section {
+  width: 100%;
+  table-layout: fixed;
 }
 
 .main-section-header {
@@ -72,6 +83,23 @@ table {
   background: #fff;
 }
 
+.center-column {
+  width: 8.5em;
+}
+
+.ranking-table {
+  margin-bottom: 2em;
+}
+
+.ranking-header-cell {
+  background-color: #ddd;
+  color: #212121
+}
+
+.ranking-body-cell {
+  font-weight: normal;
+}
+
 td.name {
   text-align: left;
 }
@@ -82,7 +110,7 @@ td.change {
 
 div.change {
   display: inline-block;
-  width: 55px;
+  width: 3.5em;
   text-align: left;
 }
 
@@ -111,13 +139,18 @@ td.invisible {
   visibility: hidden;
 }
 
+th.line-break, td.line-break {
+  padding-bottom: 0.83em;
+}
+
 button {
-  margin: 10px;
-  font-size: 15px;
+  font-size: 0.8em;
 }
 
 #end-buttons {
   text-align: center;
+  font-size: 1em;
+  margin: 1em;
 }
 
 .ranking-parent {
@@ -133,3 +166,35 @@ select {
   margin-bottom: 1.5em;
   margin-right: 1.5em;
 }
+
+@media (max-width: 900px) {
+  input {
+    width: auto;
+  }
+}
+
+@media (max-width: 525px) {
+  table, #end-buttons, button {
+    font-size: 0.9em;
+  }
+
+  img.ranking-img {
+    max-width: 60px;
+    max-height: 60px;
+  }
+}
+
+/* @media (max-width: 420px) {
+  table, #end-buttons {
+    font-size: 0.7em
+  }
+
+  button {
+    font-size: 0.9em;
+  }
+
+  img.ranking-img {
+    max-width: 50px;
+    max-height: 50px;
+  }
+} */

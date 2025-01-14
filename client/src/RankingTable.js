@@ -137,7 +137,7 @@ export default class RankingTable extends React.Component {
                                     imageUrl = null;
                                 }
                                 
-                                image = (<img src={imageUrl} alt={pokemon.name} />);
+                                image = (<img src={imageUrl} alt={pokemon.name} className='ranking-img'/>);
                             }
 
                             return (

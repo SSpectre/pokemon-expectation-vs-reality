@@ -1,5 +1,4 @@
 import React from 'react';
-import { isMobile } from 'react-device-detect';
 import StatLine from './StatLine';
 import RankingTable from './RankingTable';
 
@@ -58,7 +57,6 @@ export default class App extends React.Component {
 		if (loaded) {
 			let imageUrl1 = this.state.currentPokemon1.image_url;
 			let imageUrl2 = this.state.currentPokemon2.image_url;
-			let imageClassName = isMobile ? 'pokemon-img-mobile' : 'pokemon-img';
 
 			//database has a separate naming convention from that displayed to the user
 			let stats = ['HP', 'Attack', 'Defense', 'Special Attack', 'Special Defense', 'Speed'];
@@ -79,15 +77,15 @@ export default class App extends React.Component {
 							<tr>
 								<th className='main-section-header'>
 									<img
-										className={imageClassName}
+										className='pokemon-img'
 										src={imageUrl1}
 										alt={this.state.currentPokemon1.name}
 									/>
 								</th>
-								<th className='main-section-header'></th>
+								<th className='main-section-header center-column'></th>
 								<th className='main-section-header'>
 									<img
-										className={imageClassName}
+										className='pokemon-img'
 										src={imageUrl2}
 										alt={this.state.currentPokemon2.name}
 									/>
