@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
 
 /**
  * A component containing the information and logic for comparing a single stat between two Pokemon.
  */
 export default class StatLine extends React.Component {
+    resizeObserver = null;
+    buttonRef1 = React.createRef();
+    buttonRef2 = React.createRef();
+
     constructor(props) {
 		super(props);
 
@@ -12,11 +16,45 @@ export default class StatLine extends React.Component {
         this.state = {
             statClass1: classes.class1,
             statClass2: classes.class2,
-            selected: false
+            selected: false,
+            buttonDimensions: {
+                width: 'auto',
+                height: 'auto'
+            },
+            firstTime: true
         };
 
         this.selectOption = this.selectOption.bind(this);
+        this.resetButtons = this.resetButtons.bind(this);
+        this.resizeButtons = this.resizeButtons.bind(this);
 	}
+
+    componentDidMount() {
+        this.resizeButtons();
+
+        this.resizeObserver = new ResizeObserver((entries) => {
+            this.resizeButtons();
+        })
+
+        this.resizeObserver.observe(this.buttonRef1.current);
+        this.resizeObserver.observe(this.buttonRef2.current);
+
+        let resizeTimeout;
+        window.addEventListener("resize", (event) => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(this.resetButtons, 100);
+        });
+        
+        this.setState({
+            firstTime: false
+        });
+    }
+    
+    componentWillUnmount() {
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
+    }
 
     componentDidUpdate(prevProps) {
         //only update if new Pokemon have been chosen
@@ -28,6 +66,8 @@ export default class StatLine extends React.Component {
                 statClass2: classes.class2,
                 selected: false
             });
+
+            this.resetButtons();
         }
     }
 
@@ -56,6 +96,43 @@ export default class StatLine extends React.Component {
         }
 
         return classes;
+    }
+
+    /**
+     * Resets the size of both buttons to auto, so the larger one can be calculated
+     */
+    resetButtons() {
+        let buttonDimensions = {
+            width: 'auto',
+            height: 'auto'
+        };
+
+        this.setState({
+            buttonDimensions: buttonDimensions
+        });
+    }
+
+    /**
+     * Sets the size of both buttons to the dimensions of the larger one
+     */
+    resizeButtons() {
+        //need to use getBoundClientRect, otherwise dimensions are rounded down, which causes issues
+        let buttonRect1 = this.buttonRef1.current.getBoundingClientRect();
+        let buttonRect2 = this.buttonRef2.current.getBoundingClientRect();
+
+        let button1Width = buttonRect1.width;
+        let button1Height = buttonRect1.height;
+        let button2Width = buttonRect2.width;
+        let button2Height = buttonRect2.height;
+
+        let buttonDimensions = {
+            width: Math.max(button1Width, button2Width),
+            height: Math.max(button1Height, button2Height)
+        }
+
+        this.setState({
+            buttonDimensions: buttonDimensions
+        });
     }
 
     /**
@@ -88,24 +165,28 @@ export default class StatLine extends React.Component {
                     <td className={'main-section-header ' + this.state.statClass1 + (this.state.selected ? ' visible' : ' invisible')}>
                         {this.props.pokemon1.stats[this.props.index]['base_stat']}
                     </td>
-                    <td className='main-section-header'>...{this.props.name}?</td>
+                    <td className='main-section-header center-column'>...{this.props.name}?</td>
                     <td className={'main-section-header ' + this.state.statClass2 + (this.state.selected ? ' visible' : ' invisible')}>
                         {this.props.pokemon2.stats[this.props.index]['base_stat']}
                     </td>
                 </tr>
                 <tr>
                     <td className='main-section-header line-break'>
-                        <button id = {'button-' + this.props.index + '-1'} onClick={() => {this.selectOption(1)}} disabled={this.state.selected}>
+                        <button id = {'button-' + this.props.index + '-1'} ref={this.buttonRef1} onClick={() => {this.selectOption(1)}} disabled={this.state.selected}
+                            style={{width: this.state.buttonDimensions.width, height: this.state.buttonDimensions.height}}
+                        >
                             {this.props.pokemon1.name}
                         </button>
                     </td>
-                    <td className='main-section-header line-break'>
+                    <td className='main-section-header line-break center-column'>
                         <button id = {'button-' + this.props.index + '-unsure'} onClick={() => {this.selectOption(0)}} disabled={this.state.selected}>
                             I'm not sure
                         </button>
                     </td>
                     <td className='main-section-header line-break'>
-                        <button id = {'button-' + this.props.index + '-2'} onClick={() => {this.selectOption(2)}} disabled={this.state.selected}>
+                        <button id = {'button-' + this.props.index + '-2'} ref={this.buttonRef2} onClick={() => {this.selectOption(2)}} disabled={this.state.selected}
+                            style={{width: this.state.buttonDimensions.width, height: this.state.buttonDimensions.height}}
+                        >
                             {this.props.pokemon2.name}
                         </button>
                     </td>

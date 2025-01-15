@@ -14,7 +14,7 @@ export default class App extends React.Component {
 			pokemonList: [],
 			sortedLists: {},
 			currentPokemon1: null,
-			currentPokemon2: null
+			currentPokemon2: null,
 		}
 
 		this.selectNewPokemon = this.selectNewPokemon.bind(this);
@@ -72,31 +72,24 @@ export default class App extends React.Component {
 
 		 	content = (
 				<div>
+					<div id='pokemon-images'>
+						<div>
+							<img
+								className='pokemon-img'
+								src={imageUrl1}
+								alt={this.state.currentPokemon1.name}
+							/>
+						</div>
+						<div>
+							<img
+								className='pokemon-img'
+								src={imageUrl2}
+								alt={this.state.currentPokemon2.name}
+							/>
+						</div>
+					</div>
 					<table className='main-section'>
-						<thead>
-							<tr>
-								<th className='main-section-header'>
-									<img
-										className='pokemon-img'
-										src={imageUrl1}
-										alt={this.state.currentPokemon1.name}
-									/>
-								</th>
-								<th className='main-section-header center-column'></th>
-								<th className='main-section-header'>
-									<img
-										className='pokemon-img'
-										src={imageUrl2}
-										alt={this.state.currentPokemon2.name}
-									/>
-								</th>
-							</tr>
-							<tr className='full-width'>
-								<th className='main-section-header line-break' colSpan='3'>
-									Which of these Pokémon looks like it should have higher...
-								</th>
-							</tr>
-						</thead>
+						<caption className='line-break'>Which of these Pokémon looks like it should have higher...</caption>
 						<tbody className='main-section-body'>
 							{stats.map((stat, i) => <StatLine
 								key={stat}
