@@ -1,6 +1,7 @@
 import React from 'react';
 import StatLine from './StatLine';
 import RankingTable from './RankingTable';
+import LoadingScreen from './LoadingScreen';
 
 /**
  * The main Component of the app.
@@ -116,7 +117,7 @@ export default class App extends React.Component {
 			);
 		} else {
 			content = (
-				<h1>Loading...</h1>
+				<LoadingScreen />
 			);
 		}
 

@@ -8,8 +8,17 @@ code {
     monospace;
 }
 
-h1 {
+div.loading {
   text-align: center;
+}
+
+div.loading-container {
+  display: inline-flex;
+  text-align: left;
+  width: 7.em;
+}
+
+h1 {
   margin-top: 1.4em;
   margin-bottom: 0.55em;
 }
@@ -155,6 +164,10 @@ td.invisible {
 
 button {
   font-size: 0.8em;
+}
+
+button.selected, button.selected:hover {
+  border: solid 2px #000 !important;
 }
 
 #end-buttons {

@@ -12,7 +12,7 @@ export default class StatLine extends React.Component {
         this.state = {
             statClass1: classes.class1,
             statClass2: classes.class2,
-            selected: false
+            selected: -1
         };
 
         this.selectOption = this.selectOption.bind(this);
@@ -26,7 +26,7 @@ export default class StatLine extends React.Component {
             this.setState({
                 statClass1: classes.class1,
                 statClass2: classes.class2,
-                selected: false
+                selected: -1
             });
         }
     }
@@ -64,7 +64,7 @@ export default class StatLine extends React.Component {
      */
     selectOption(result) {
         this.setState({
-            selected: true
+            selected: result
         });
 
         fetch("/pokemon-expectation-vs-reality/update", {
@@ -85,27 +85,33 @@ export default class StatLine extends React.Component {
         return (
             <>
                 <tr>
-                    <td className={'main-section-header ' + this.state.statClass1 + (this.state.selected ? ' visible' : ' invisible')}>
+                    <td className={'main-section-header ' + this.state.statClass1 + (this.state.selected >= 0 ? ' visible' : ' invisible')}>
                         {this.props.pokemon1.stats[this.props.index]['base_stat']}
                     </td>
                     <td className='main-section-header center-column'>...{this.props.name}?</td>
-                    <td className={'main-section-header ' + this.state.statClass2 + (this.state.selected ? ' visible' : ' invisible')}>
+                    <td className={'main-section-header ' + this.state.statClass2 + (this.state.selected >= 0 ? ' visible' : ' invisible')}>
                         {this.props.pokemon2.stats[this.props.index]['base_stat']}
                     </td>
                 </tr>
                 <tr>
                     <td className='main-section-header line-break'>
-                        <button id = {'button-' + this.props.index + '-1'} onClick={() => {this.selectOption(1)}} disabled={this.state.selected}>
+                        <button className={this.state.selected === 1 ? 'selected' : ''} id = {'button-' + this.props.index + '-1'}
+                            onClick={() => {this.selectOption(1)}} disabled={this.state.selected >= 0}
+                        >
                             {this.props.pokemon1.name}
                         </button>
                     </td>
-                    <td className='main-section-header line-break center-column'>
-                        <button id = {'button-' + this.props.index + '-unsure'} onClick={() => {this.selectOption(0)}} disabled={this.state.selected}>
+                    <td className='main-section-header line-break'>
+                        <button className={this.state.selected === 0 ? 'selected' : ''} id = {'button-' + this.props.index + '-unsure'}
+                            onClick={() => {this.selectOption(0)}} disabled={this.state.selected >= 0}
+                        >
                             I'm not sure
                         </button>
                     </td>
                     <td className='main-section-header line-break'>
-                        <button id = {'button-' + this.props.index + '-2'} onClick={() => {this.selectOption(2)}} disabled={this.state.selected}>
+                        <button className={this.state.selected === 2 ? 'selected' : ''} id = {'button-' + this.props.index + '-2'}
+                            onClick={() => {this.selectOption(2)}} disabled={this.state.selected >= 0}
+                        >
                             {this.props.pokemon2.name}
                         </button>
                     </td>
