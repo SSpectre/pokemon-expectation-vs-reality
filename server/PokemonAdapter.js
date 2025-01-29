@@ -10,6 +10,7 @@ export default class PokemonAdapter {
 	 */
     static performAllActions(list, useDBForImages) {
         let result = this.filterPokemon(list, useDBForImages);
+		result = this.filterInvalidPokemon(list);
         result = this.formatFormNames(result, useDBForImages);
         result = this.fixNames(result);
 
@@ -81,6 +82,20 @@ export default class PokemonAdapter {
 
         return filteredPokemon;
     }
+
+	/**
+	 * Filters out Pokemon who don't have base stats in the API.
+	 * @param {Object[]} originalList The array of Pokemon objects to be filtered.
+	 * @returns {Object[]} The filtered list.
+	 */
+	static filterInvalidPokemon(originalList) {
+		let filteredPokemon = originalList.filter((value, index, arr) => {
+			let stats = value.stats;
+			return stats.length > 0;
+		});
+
+		return filteredPokemon;
+	}
 
 	/**
 	 * Formats Pokemon form names to simplify/complete them and match the naming conventions of other systems.

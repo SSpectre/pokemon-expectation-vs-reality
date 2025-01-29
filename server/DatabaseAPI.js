@@ -26,12 +26,18 @@ export default class DatabaseAPI {
                     VALUES (${pokemon.id}, "${pokemon.name}", 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0)`;
 
                 this.db.run(sql, (err) => {
-                    if(err['code'] != 'SQLITE_CONSTRAINT') {
-                        //Pokemon already exists in the database
-                        reject(err);
+                    try {
+                        if(err['code'] != 'SQLITE_CONSTRAINT') {
+                            //Pokemon already exists in the database
+                            reject(err);
+                        }
+                        else
+                            resolve();
+                    } catch (e) {
+                        if (e instanceof TypeError) {
+                            console.log(sql);
+                        }
                     }
-                    else
-                        resolve();
                 });
             }
         });
