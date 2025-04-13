@@ -5,12 +5,12 @@ export default class PokemonAdapter {
 	/**
 	 * Performs all filtering and formatting steps at once.
 	 * @param {Object[]} list The array of Pokemon to be updated.
-	 * @param {booolean} useDBForImages Whether to use PokemonDB or PokeAPI for image. DB uses jpg instead of png, but PokeAPI has more complete and up-to-date art.
+	 * @param {boolean} useDBForImages Whether to use PokemonDB or PokeAPI for image. DB uses jpg instead of png, but PokeAPI has more complete and up-to-date art.
 	 * @returns {Object[]} The updated list.
 	 */
     static performAllActions(list, useDBForImages) {
         let result = this.filterPokemon(list, useDBForImages);
-		result = this.filterInvalidPokemon(list);
+		result = this.filterInvalidPokemon(result);
         result = this.formatFormNames(result, useDBForImages);
         result = this.fixNames(result);
 
