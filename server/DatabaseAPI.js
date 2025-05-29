@@ -43,6 +43,35 @@ export default class DatabaseAPI {
         });
     }
 
+    createTempRank(realRank) {
+        return new Promise ((resolve, reject) => {
+            let sql = `DROP TABLE IF EXISTS temp_rank;
+                CREATE TEMPORARY TABLE temp_rank (
+                    id INT,
+                    rank INT
+                );`;
+
+            this.db.exec(sql, (err) => {
+                if(err)
+                    reject(err);
+                else
+                    resolve();
+            });
+
+            for (const id of realRank) {
+                sql = `INSERT INTO temp_rank (id, rank)
+                    VALUES (${id}, ${realRank.indexOf(id)});`;
+
+                this.db.run(sql, (err) => {
+                    if(err)
+                        reject(err);
+                    else
+                        resolve();
+                });
+            }
+        })
+    }
+
     /**
      * Retrieves the list of Pokemon and their Elo scores for each stat from the database.
      * @param {string} sortingStat The stat to sort the Pokemon by.
@@ -51,15 +80,12 @@ export default class DatabaseAPI {
      */
     getAllPokemon(sortingStat, ascending) {
         return new Promise((resolve, reject) => {
-            let order = 'DESC';
-            if (ascending) {
-                order = 'ASC';
-            }
-
-            //total Elo across all stats is used as a sorting tiebreaker
-            let sql = `SELECT id, name, hp, attack, defense, special_attack, special_defense, speed
-                FROM pokemon
-                ORDER BY ${sortingStat} ${order}, hp + attack + defense + special_attack + special_defense + speed ${order}`;
+            //real rank is used as a tiebreaker
+            let sql = `SELECT pokemon.id, pokemon.name, pokemon.hp, pokemon.attack, pokemon.defense, pokemon.special_attack, pokemon.special_defense, pokemon.speed,
+                        temp_rank.rank
+                    FROM pokemon
+                    JOIN temp_rank ON pokemon.id=temp_rank.id
+                    ORDER BY ${sortingStat} ${ascending ? 'ASC' : 'DESC'}, temp_rank.rank ${ascending ? 'DESC' : 'ASC'}`;
 
             this.db.all(sql, (err, rows) => {
                 if(err)

@@ -90,8 +90,13 @@ app.put("/pokemon-expectation-vs-reality/update", async (req, res) => {
  * Queries the database for a list of all Pokemon sorted by the Elo of a single stat and returns the results to the client.
  */
 app.get("/pokemon-expectation-vs-reality/ranking", async (req, res) => {
+	//database replaces spaces with underscores while API uses hyphens
+	let apiStat = req.query.stat.replace('_', '-');
+
+	await db.createTempRank(sortedLists[apiStat]);
     let result = await db.getAllPokemon(req.query.stat, req.query.asc);
 	res.json(result);
+
 });
 
 /**
