@@ -94,9 +94,12 @@ app.get("/pokemon-expectation-vs-reality/ranking", async (req, res) => {
 	let apiStat = req.query.stat.replace('_', '-');
 
 	await db.createTempRank(sortedLists[apiStat]);
-    let result = await db.getAllPokemon(req.query.stat, req.query.asc);
-	res.json(result);
 
+	//some Pokemon may be missing from the list if getAllPokemon is called without waiting
+	setTimeout(async () => {
+		let result = await db.getAllPokemon(req.query.stat, req.query.asc);
+		res.json(result);
+	}, 1);
 });
 
 /**

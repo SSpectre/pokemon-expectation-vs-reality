@@ -43,6 +43,11 @@ export default class DatabaseAPI {
         });
     }
 
+    /**
+     * Creates a temporary table that stores the real rankings of Pokemon by one stat, to be used for tiebreakers.
+     * @param {number[]} realRank The sorted list of IDs to create a table from.
+     * @returns {Promise} A Promise which is resolved when the table is created and populated.
+     */
     createTempRank(realRank) {
         return new Promise ((resolve, reject) => {
             let sql = `DROP TABLE IF EXISTS temp_rank;
