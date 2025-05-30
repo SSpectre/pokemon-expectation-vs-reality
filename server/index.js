@@ -99,7 +99,7 @@ app.get("/pokemon-expectation-vs-reality/ranking", async (req, res) => {
 	setTimeout(async () => {
 		let result = await db.getAllPokemon(req.query.stat, req.query.asc);
 		res.json(result);
-	}, 1);
+	}, 100);
 });
 
 /**
