@@ -230,16 +230,21 @@ select {
   .main-section {
     width: 90%;
   }
-}
-
-@media (max-width: 525px) {
   table, #end-buttons, button {
     font-size: 0.9em;
   }
+}
 
+@media (max-width: 525px) {
   img.ranking-img {
     max-width: 60px;
     max-height: 60px;
+  }
+}
+
+@media (max-width: 500px) {
+  table {
+    font-size: 0.8em;
   }
 }
 
@@ -249,17 +254,12 @@ select {
   }
 }
 
-/* @media (max-width: 420px) {
-  table, #end-buttons {
-    font-size: 0.7em
-  }
-
-  button {
-    font-size: 0.9em;
-  }
-
+@media (max-width: 410px) {
   img.ranking-img {
-    max-width: 50px;
-    max-height: 50px;
+    max-width: 40px;
+    max-height: 40px;
   }
-} */
+  table {
+    font-size: 0.7em;
+  }
+}
