@@ -54,16 +54,16 @@ export default class RankingTable extends React.Component {
 
             for (let i = 0; i < result.length; i++) {
                 if (asc) {
-                    result[i].current = result.length - (i+1);
+                    result[i].community = result.length - (i+1);
                 }
                 else {
-                    result[i].current = i;
+                    result[i].community = i;
                 }
             }
 
             for (let pokemon of result) {
                 pokemon.real = this.props.sortedLists[stat].indexOf(pokemon.id);
-                pokemon.change = pokemon.real - pokemon.current;
+                pokemon.change = pokemon.real - pokemon.community;
             }
 
             this.setState({
@@ -108,10 +108,10 @@ export default class RankingTable extends React.Component {
                 prevState => ({
                     pokemonList: prevState.pokemonList.toSorted((a, b) => {
                         if (asc) {
-                            return b.current - a.current;
+                            return b.community - a.community;
                         }
                         else {
-                            return a.current - b.current;
+                            return a.community - b.community;
                         }
                     })
                 })
