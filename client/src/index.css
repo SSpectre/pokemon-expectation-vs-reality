@@ -112,7 +112,20 @@ th, td {
 
 .ranking-header-cell {
   background-color: #ddd;
-  color: #212121
+  color: #212121;
+}
+
+th.sort-header {
+  cursor: pointer;
+}
+
+span.sort-header {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sort-header-title {
+  margin-right: 0.2em;
 }
 
 .ranking-body-cell {
@@ -185,9 +198,14 @@ label {
   font-weight: normal;
 }
 
-select {
+.radio {
+  margin-left: 2px;
   margin-bottom: 1.5em;
   margin-right: 1.5em;
+}
+
+select {
+  margin-bottom: 1.5em;
 }
 
 @media (max-width: 992px) {

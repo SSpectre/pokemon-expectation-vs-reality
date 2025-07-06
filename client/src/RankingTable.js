@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaArrowUp, FaArrowDown} from 'react-icons/fa';
+import {FaArrowUp, FaArrowDown, FaSort, FaCaretUp, FaCaretDown} from 'react-icons/fa';
 
 /**
  * A component containing the information and logic for the community ranking table.
@@ -17,15 +17,19 @@ export default class RankingTable extends React.Component {
                 defense: 0,
                 special_attack: 0,
                 special_defense: 0,
-                speed: 0
+                speed: 0,
+                community: 0,
+                real: 0,
+                change: 0
             }],
-            realRank: [0],
-            ascending: false
+            ascending: false,
+            sortBy: 'community'
         }
 
         this.getRanking = this.getRanking.bind(this);
         this.selectStat = this.selectStat.bind(this);
-        this.reverseList = this.reverseList.bind(this);
+        this.selectSort = this.selectSort.bind(this);
+        this.sortList = this.sortList.bind(this);
 	}
 
     componentDidMount() {
@@ -48,14 +52,25 @@ export default class RankingTable extends React.Component {
             //database replaces spaces with underscores while API uses hyphens
             stat = stat.replace('_', '-');
 
-            let real = result.map((pokemon, i) => {
-                return this.props.sortedLists[stat].indexOf(pokemon.id);
-            });
+            for (let i = 0; i < result.length; i++) {
+                if (asc) {
+                    result[i].current = result.length - (i+1);
+                }
+                else {
+                    result[i].current = i;
+                }
+            }
+
+            for (let pokemon of result) {
+                pokemon.real = this.props.sortedLists[stat].indexOf(pokemon.id);
+                pokemon.change = pokemon.real - pokemon.current;
+            }
 
             this.setState({
-                pokemonList: result,
-                realRank: real
+                pokemonList: result
             });
+
+            this.sortList(this.state.sortBy);
         })();
     }
 
@@ -68,23 +83,72 @@ export default class RankingTable extends React.Component {
         this.getRanking(stat);
     }
 
-    /**
-     * Handler function for clicking the Ascending checkbox.
-     * @param {Object} event The captured click event.
-     */
-    reverseList(event) {
-        this.setState(
-            prevState => ({
-                pokemonList: prevState.pokemonList.toReversed(),
-                realRank: prevState.realRank.toReversed(),
-                ascending: event.target.checked
-            })
-        );
+    selectSort(value) {
+        if (value === this.state.sortBy) {
+            this.setState(
+                prevState => ({
+                    pokemonList: prevState.pokemonList.toReversed(),
+                    ascending: !prevState.ascending
+                })
+            );
+        }
+        else {
+            this.setState({
+                sortBy: value
+            });
+
+            this.sortList(value);
+        }
+    }
+
+    sortList(value) {
+        let asc = this.state.ascending;
+        if (value === 'community') {
+            this.setState(
+                prevState => ({
+                    pokemonList: prevState.pokemonList.toSorted((a, b) => {
+                        if (asc) {
+                            return b.current - a.current;
+                        }
+                        else {
+                            return a.current - b.current;
+                        }
+                    })
+                })
+            );
+        }
+        else if (value === 'real') {
+            this.setState(
+                prevState => ({
+                    pokemonList: prevState.pokemonList.toSorted((a, b) => {
+                        if (asc) {
+                            return b.real - a.real;
+                        }
+                        else {
+                            return a.real - b.real;
+                        }
+                    })
+                })
+            );
+        }
+        else if (value === 'change') {
+            this.setState(
+                prevState => ({
+                    pokemonList: prevState.pokemonList.toSorted((a, b) => {
+                        if (asc) {
+                            return a.change - b.change;
+                        }
+                        else {
+                            return b.change - a.change;
+                        }
+                    })
+                })
+            );
+        }
     }
 
     render() {
         let pokemonList = this.state.pokemonList;
-        let realRank = this.state.realRank;
         let stats = this.props.stats;
         let dbStats = this.props.dbFormattedStats;
         let imageList = this.props.imageList;
@@ -94,8 +158,8 @@ export default class RankingTable extends React.Component {
 
         return (
             <div className='ranking-parent'>
-                <h1>Community Rankings</h1>
-                <label htmlFor='stats'>Sort by:</label>
+                <h1>Rankings</h1>
+                <label htmlFor='stats'>Stat:</label>
                 <select name='stats' id='stat-dropdown' onChange={this.selectStat}>
                     {stats.map((stat, i) => (
                         <option key={stat} value={dbStats[i]}>
@@ -103,27 +167,35 @@ export default class RankingTable extends React.Component {
                         </option>
                     ))}
                 </select>
-                <label htmlFor='ascending'>Ascending?</label>
-                <input type='checkbox' id='ascending' name='ascending' onClick={this.reverseList} />
                 <table className='ranking-table'>
                     <thead className='ranking-header'>
                         <tr>
-                            <th className='ranking-header-cell'>Rank</th>
-                            <th className='ranking-header-cell'>Pokémon</th>
-                            <th className='ranking-header-cell'>Real Rank</th>
-                            <th className='ranking-header-cell'>Change</th>
+                            <th className='ranking-header-cell sort-header' onClick={() => this.selectSort('community')}>
+                                <span className='sort-header'>
+                                    <span className='sort-header-title'>Rank</span>
+                                    {this.state.sortBy === 'community' ? (this.state.ascending ? <FaCaretUp /> : <FaCaretDown />) : <FaSort />}
+                                </span>
+                            </th>
+                            <th className='ranking-header-cell'>
+                                Pokémon
+                            </th>
+                            <th className='ranking-header-cell sort-header' onClick={() => this.selectSort('real')}>
+                                <span className='sort-header'>
+                                    <span className='sort-header-title'>Real Rank</span>
+                                    {this.state.sortBy === 'real' ? (this.state.ascending ? <FaCaretUp /> : <FaCaretDown />) : <FaSort />}
+                                </span>
+                            </th>
+                            <th className='ranking-header-cell sort-header' onClick={() => this.selectSort('change')}>
+                                <span className='sort-header'>
+                                    <span className='sort-header-title'>Change</span>
+                                    {this.state.sortBy === 'change' ? (this.state.ascending ? <FaCaretUp /> : <FaCaretDown />) : <FaSort />}
+                                </span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody className='ranking-body'>
                         {pokemonList.map((pokemon, i) => {
-                            let adjustedIndex = i;
-                            if (this.state.ascending) {
-                                //reverse the rank if sorting in ascending order
-                                adjustedIndex = pokemonList.length - (i + 1);
-                            }
-
-                            let change = realRank[i] - adjustedIndex;
-                            let positive = change >= 0;
+                            let positive = pokemon.change >= 0;
 
                             //don't display a thumbnail image if the list isn't loaded yet
                             let image = '';
@@ -142,19 +214,19 @@ export default class RankingTable extends React.Component {
 
                             return (
                                 <tr key={pokemon.id}>
-                                    <td className='ranking-body-cell'>{adjustedIndex+1}</td>
+                                    <td className='ranking-body-cell'>{pokemon.community+1}</td>
                                     <td className='ranking-body-cell name'>
                                         <figure>
                                             {image}
                                             <figcaption>{pokemon.name}</figcaption>
                                         </figure>
                                     </td>
-                                    <td className='ranking-body-cell'>{realRank[i]+1}</td>
+                                    <td className='ranking-body-cell'>{pokemon.real + 1}</td>
                                     <td className={'ranking-body-cell change' + (positive ? ' higher-stat' : ' lower-stat')}>
                                         <div className='change'>
                                             <span className='change'>
                                                 {positive ? <FaArrowUp /> : <FaArrowDown />}
-                                                <span className='change-amount'>{' ' + Math.abs(change)}</span>
+                                                <span className='change-amount'>{' ' + Math.abs(pokemon.change)}</span>
                                             </span>
                                         </div>
                                     </td>
