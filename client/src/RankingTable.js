@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaArrowUp, FaArrowDown, FaSort, FaCaretUp, FaCaretDown} from 'react-icons/fa';
+import {FaArrowUp, FaArrowDown, FaMinus, FaSort, FaCaretUp, FaCaretDown} from 'react-icons/fa';
 
 /**
  * A component containing the information and logic for the community ranking table.
@@ -195,7 +195,20 @@ export default class RankingTable extends React.Component {
                     </thead>
                     <tbody className='ranking-body'>
                         {pokemonList.map((pokemon, i) => {
-                            let positive = pokemon.change >= 0;
+                            let changeDirection;
+                            let changeClass;
+                            if (pokemon.change > 0) {
+                                changeDirection = <FaArrowUp />;
+                                changeClass = ' higher-stat';
+                            }
+                            else if (pokemon.change === 0) {
+                                changeDirection = <FaMinus />;
+                                changeClass = '';
+                            }
+                            else {
+                                changeDirection = <FaArrowDown />;
+                                changeClass = ' lower-stat';
+                            }
 
                             //don't display a thumbnail image if the list isn't loaded yet
                             let image = '';
@@ -222,10 +235,10 @@ export default class RankingTable extends React.Component {
                                         </figure>
                                     </td>
                                     <td className='ranking-body-cell'>{pokemon.real + 1}</td>
-                                    <td className={'ranking-body-cell change' + (positive ? ' higher-stat' : ' lower-stat')}>
+                                    <td className={'ranking-body-cell change' + changeClass}>
                                         <div className='change'>
                                             <span className='change'>
-                                                {positive ? <FaArrowUp /> : <FaArrowDown />}
+                                                {changeDirection}
                                                 <span className='change-amount'>{' ' + Math.abs(pokemon.change)}</span>
                                             </span>
                                         </div>
