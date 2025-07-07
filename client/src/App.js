@@ -36,17 +36,62 @@ export default class App extends React.Component {
 	}
 
 	/**
-	 * Selects two random Pokemon to compare.
+	 * Selects two random Pokemon to compare, prioritizing ones with lower numbers of matches
 	 */
 	selectNewPokemon() {
-		let random1 = Math.floor(Math.random() * this.state.pokemonList.length);
-		let random2 = Math.floor(Math.random() * this.state.pokemonList.length);
-
-		this.setState(prevState => {
-			return {
-				currentPokemon1: prevState.pokemonList[random1],
-				currentPokemon2: prevState.pokemonList[random2]
+		//find the pokemon with the lowest number of matches
+		//second lowest is also found to determine if more than one pokemon has the lowest match number
+		let secondLowest = Infinity;
+		let lowestPokemon = this.state.pokemonList.reduce((currentLowest, pokemon) => {
+			if (pokemon.matchNumber <= currentLowest.matchNumber) {
+				secondLowest = currentLowest.matchNumber;
+				return pokemon;
 			}
+			else {
+				if (pokemon.matchNumber < secondLowest) {
+					secondLowest = pokemon.matchNumber
+				}
+
+				return currentLowest;
+			}
+		});
+
+		let lowestMatchNumber = lowestPokemon.matchNumber;
+
+		let eligiblePokemon;
+		let id1;
+		let id2;
+		if (lowestMatchNumber === secondLowest) {
+			//multiple pokemon have the lowest match number, so we can filter for just that number
+			eligiblePokemon = this.state.pokemonList.filter((pokemon) => {
+				return pokemon.matchNumber === lowestMatchNumber;
+			});
+
+			id1 = Math.floor(Math.random() * eligiblePokemon.length);
+
+			//prevent self-matchups
+			do {
+				id2 = Math.floor(Math.random() * eligiblePokemon.length);
+			} while (id2 === id1);
+		}
+		else {
+			//only one pokemon has the lowest match number, so we need to filter for both the lowest and second lowest
+			eligiblePokemon = this.state.pokemonList.filter((pokemon) => {
+				return pokemon.matchNumber <= secondLowest;
+			});
+
+			//guarantee the pokemon with lowest match number is picked
+			id1 = lowestPokemon.id - 1;
+
+			//prevent self-matchups
+			do {
+				id2 = Math.floor(Math.random() * eligiblePokemon.length);
+			} while (id2 === id1);
+		}
+
+		this.setState({
+			currentPokemon1: eligiblePokemon[id1],
+			currentPokemon2: eligiblePokemon[id2]
 		});
 	}
 

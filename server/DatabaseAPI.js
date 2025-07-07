@@ -102,6 +102,27 @@ export default class DatabaseAPI {
     }
 
     /**
+     * Retrieves the number of matches that a specific Pokemon has been involved in.
+     * @param {number} id 
+     * @returns {Promise<Object>} A Promise representing an Object containing the match number.
+     */
+    getPokemonMatchNumber(id) {
+        return new Promise((resolve, reject) => {
+            let sql = `SELECT (pokemon.hp_match_number + pokemon.attack_match_number + pokemon.defense_match_number + pokemon.special_attack_match_number +
+                pokemon.special_defense_match_number + pokemon.speed_match_number) AS match_number
+                FROM pokemon
+                WHERE id = ${id}`;
+
+            this.db.get(sql, (err, rows) => {
+                if(err)
+                    reject(err);
+                else
+                    resolve(rows);
+            });
+        });
+    }
+
+    /**
      * Retrieves the Elo score and related information for a single stat of a specific Pokemon from the database.
      * @param {number} id The Pokemon/form's unique id.
      * @param {string} stat The stat to retrieve.

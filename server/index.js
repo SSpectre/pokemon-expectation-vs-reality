@@ -123,10 +123,15 @@ app.listen(PORT, function() {
 
 		pokemonList = PokemonAdapter.performAllActions(pokemonList, false);
 
-		//associate an image URL with each Pokemon
+		
 		for (const pokemon of pokemonList) {
+			//associate an image URL with each Pokemon
 			let imageUrl = getImageUrl(pokemon);
 			pokemon.image_url = imageUrl
+
+			//associate the pokemon with the number of matches it's participated in
+			let matchNumber = await db.getPokemonMatchNumber(pokemon.id);
+			pokemon.matchNumber = matchNumber['match_number'];
 		}
 
 		//if the Pokemon is new, add it to the database
