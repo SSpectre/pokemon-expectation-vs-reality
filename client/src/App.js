@@ -39,60 +39,68 @@ export default class App extends React.Component {
 	 * Selects two random Pokemon to compare, prioritizing ones with lower numbers of matches
 	 */
 	selectNewPokemon() {
-		//find the pokemon with the lowest number of matches
-		//second lowest is also found to determine if more than one pokemon has the lowest match number
-		let secondLowest = Infinity;
-		let lowestPokemon = this.state.pokemonList.reduce((currentLowest, pokemon) => {
-			if (pokemon.matchNumber <= currentLowest.matchNumber) {
-				secondLowest = currentLowest.matchNumber;
-				return pokemon;
+		let matchNumbers;
+		(async () => {
+			let json = await fetch("/pokemon-expectation-vs-reality/matches");
+			matchNumbers = await json.json();
+
+			//find the pokemon with the lowest number of matches
+			//second lowest is also found to determine if more than one pokemon has the lowest match number
+			let secondLowest = Infinity;
+			let lowestPokemon = matchNumbers.reduce((currentLowest, pokemon) => {
+				if (pokemon['match_number'] <= currentLowest['match_number']) {
+					secondLowest = currentLowest['match_number'];
+					return pokemon;
+				}
+				else {
+					if (pokemon['match_number'] < secondLowest) {
+						secondLowest = pokemon['match_number'];
+					}
+
+					return currentLowest;
+				}
+			});
+
+			let lowestMatchNumber = lowestPokemon['match_number'];
+
+			let eligiblePokemon;
+			let id1;
+			let id2;
+			if (lowestMatchNumber === secondLowest) {
+				//multiple pokemon have the lowest match number, so we can filter for just that number
+				eligiblePokemon = this.state.pokemonList.filter((pokemon) => {
+					let matchNumber = matchNumbers.find((mn) => mn['id'] === pokemon.id);
+					return matchNumber['match_number'] === lowestMatchNumber;
+				});
+
+				id1 = Math.floor(Math.random() * eligiblePokemon.length);
+
+				//prevent self-matchups
+				do {
+					id2 = Math.floor(Math.random() * eligiblePokemon.length);
+				} while (id2 === id1);
 			}
 			else {
-				if (pokemon.matchNumber < secondLowest) {
-					secondLowest = pokemon.matchNumber
-				}
+				//only one pokemon has the lowest match number, so we need to filter for both the lowest and second lowest
+				eligiblePokemon = this.state.pokemonList.filter((pokemon) => {
+					let matchNumber = matchNumbers.find((mn) => mn['id'] === pokemon.id);
+					return matchNumber['match_number'] <= secondLowest;
+				});
 
-				return currentLowest;
+				//guarantee the pokemon with lowest match number is picked
+				id1 = lowestPokemon['id'] - 1;
+
+				//prevent self-matchups
+				do {
+					id2 = Math.floor(Math.random() * eligiblePokemon.length);
+				} while (id2 === id1);
 			}
-		});
 
-		let lowestMatchNumber = lowestPokemon.matchNumber;
-
-		let eligiblePokemon;
-		let id1;
-		let id2;
-		if (lowestMatchNumber === secondLowest) {
-			//multiple pokemon have the lowest match number, so we can filter for just that number
-			eligiblePokemon = this.state.pokemonList.filter((pokemon) => {
-				return pokemon.matchNumber === lowestMatchNumber;
+			this.setState({
+				currentPokemon1: eligiblePokemon[id1],
+				currentPokemon2: eligiblePokemon[id2],
 			});
-
-			id1 = Math.floor(Math.random() * eligiblePokemon.length);
-
-			//prevent self-matchups
-			do {
-				id2 = Math.floor(Math.random() * eligiblePokemon.length);
-			} while (id2 === id1);
-		}
-		else {
-			//only one pokemon has the lowest match number, so we need to filter for both the lowest and second lowest
-			eligiblePokemon = this.state.pokemonList.filter((pokemon) => {
-				return pokemon.matchNumber <= secondLowest;
-			});
-
-			//guarantee the pokemon with lowest match number is picked
-			id1 = lowestPokemon.id - 1;
-
-			//prevent self-matchups
-			do {
-				id2 = Math.floor(Math.random() * eligiblePokemon.length);
-			} while (id2 === id1);
-		}
-
-		this.setState({
-			currentPokemon1: eligiblePokemon[id1],
-			currentPokemon2: eligiblePokemon[id2]
-		});
+		})();
 	}
 
 	render() {

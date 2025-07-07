@@ -102,18 +102,16 @@ export default class DatabaseAPI {
     }
 
     /**
-     * Retrieves the number of matches that a specific Pokemon has been involved in.
-     * @param {number} id 
-     * @returns {Promise<Object>} A Promise representing an Object containing the match number.
+     * Retrieves a list of Pokemon IDs and the corresponding number of matches each has participated in from the database.
+     * @returns {Promise<Object[]>} A Promise representing an array of Objects with id and match_number properties.
      */
-    getPokemonMatchNumber(id) {
+    getMatchNumbers() {
         return new Promise((resolve, reject) => {
-            let sql = `SELECT (pokemon.hp_match_number + pokemon.attack_match_number + pokemon.defense_match_number + pokemon.special_attack_match_number +
-                pokemon.special_defense_match_number + pokemon.speed_match_number) AS match_number
-                FROM pokemon
-                WHERE id = ${id}`;
+            let sql = `SELECT id, (hp_match_number + attack_match_number + defense_match_number + special_attack_match_number + special_defense_match_number +
+                speed_match_number) AS match_number
+                FROM pokemon`;
 
-            this.db.get(sql, (err, rows) => {
+            this.db.all(sql, (err, rows) => {
                 if(err)
                     reject(err);
                 else

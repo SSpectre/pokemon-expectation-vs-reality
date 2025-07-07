@@ -87,6 +87,14 @@ app.put("/pokemon-expectation-vs-reality/update", async (req, res) => {
 })
 
 /**
+ * Queries the data for the total number of matches each Pokemon has participated in and returns the results to the client.
+ */
+app.get("/pokemon-expectation-vs-reality/matches", async (req, res) => {
+	let result = await db.getMatchNumbers();
+	res.json(result);
+})
+
+/**
  * Queries the database for a list of all Pokemon sorted by the Elo of a single stat and returns the results to the client.
  */
 app.get("/pokemon-expectation-vs-reality/ranking", async (req, res) => {
@@ -128,10 +136,6 @@ app.listen(PORT, function() {
 			//associate an image URL with each Pokemon
 			let imageUrl = getImageUrl(pokemon);
 			pokemon.image_url = imageUrl
-
-			//associate the pokemon with the number of matches it's participated in
-			let matchNumber = await db.getPokemonMatchNumber(pokemon.id);
-			pokemon.matchNumber = matchNumber['match_number'];
 		}
 
 		//if the Pokemon is new, add it to the database
