@@ -143,7 +143,7 @@ export default class App extends React.Component {
 						</div>
 					</div>
 					<table className='main-section'>
-						<caption className='line-break'>Which of these Pokémon looks like it should have higher...</caption>
+						<caption className='line-break'>Based on appearance alone, which Pokémon looks like it should have higher...</caption>
 						<tbody className='main-section-body'>
 							{stats.map((stat, i) => <StatLine
 								key={stat}
