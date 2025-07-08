@@ -176,7 +176,7 @@ td.invisible {
 }
 
 button {
-  font-size: 0.9em;
+  font-size: 1em;
 }
 
 button.selected, button.selected:hover {
@@ -230,7 +230,7 @@ select {
   .main-section {
     width: 90%;
   }
-  table, #end-buttons, button {
+  table {
     font-size: 0.9em;
   }
 }
