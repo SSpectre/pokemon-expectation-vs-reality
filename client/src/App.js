@@ -41,10 +41,8 @@ export default class App extends React.Component {
 	selectNewPokemon() {
 		let matchNumbers;
 		(async () => {
-			let json = await fetch("/pokemon-expectation-vs-reality/matches", {cache: 'no-cache'});
+			let json = await fetch("/pokemon-expectation-vs-reality/matches");
 			matchNumbers = await json.json();
-
-			console.log(matchNumbers);
 
 			//find the pokemon with the lowest number of matches
 			//second lowest is also found to determine if more than one pokemon has the lowest match number
@@ -90,15 +88,14 @@ export default class App extends React.Component {
 				});
 
 				//guarantee the pokemon with lowest match number is picked
-				i1 = lowestPokemon['id'] - 1;
+				let guaranteedPokemon = eligiblePokemon.find((pokemon) => pokemon.id === lowestPokemon['id']);
+				i1 = eligiblePokemon.indexOf(guaranteedPokemon);
 
 				//prevent self-matchups
 				do {
 					i2 = Math.floor(Math.random() * eligiblePokemon.length);
 				} while (i2 === i1);
 			}
-
-			console.log(eligiblePokemon);
 
 			this.setState({
 				currentPokemon1: eligiblePokemon[i1],
