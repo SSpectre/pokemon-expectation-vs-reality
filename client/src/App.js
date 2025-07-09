@@ -63,9 +63,11 @@ export default class App extends React.Component {
 
 			let lowestMatchNumber = lowestPokemon['match_number'];
 
+			console.log("Lowest: " + lowestMatchNumber + "\nSecond lowest: " + secondLowest);
+
 			let eligiblePokemon;
-			let id1;
-			let id2;
+			let i1;
+			let i2;
 			if (lowestMatchNumber === secondLowest) {
 				//multiple pokemon have the lowest match number, so we can filter for just that number
 				eligiblePokemon = this.state.pokemonList.filter((pokemon) => {
@@ -73,12 +75,12 @@ export default class App extends React.Component {
 					return matchNumber['match_number'] === lowestMatchNumber;
 				});
 
-				id1 = Math.floor(Math.random() * eligiblePokemon.length);
+				i1 = Math.floor(Math.random() * eligiblePokemon.length);
 
 				//prevent self-matchups
 				do {
-					id2 = Math.floor(Math.random() * eligiblePokemon.length);
-				} while (id2 === id1);
+					i2 = Math.floor(Math.random() * eligiblePokemon.length);
+				} while (i2 === i1);
 			}
 			else {
 				//only one pokemon has the lowest match number, so we need to filter for both the lowest and second lowest
@@ -88,17 +90,20 @@ export default class App extends React.Component {
 				});
 
 				//guarantee the pokemon with lowest match number is picked
-				id1 = lowestPokemon['id'] - 1;
+				i1 = lowestPokemon['id'] - 1;
 
 				//prevent self-matchups
 				do {
-					id2 = Math.floor(Math.random() * eligiblePokemon.length);
-				} while (id2 === id1);
+					i2 = Math.floor(Math.random() * eligiblePokemon.length);
+				} while (i2 === i1);
 			}
 
+			console.log(eligiblePokemon[i1].name + ": " + matchNumbers.find((mn) => mn['id'] === eligiblePokemon[i1].id)['match_number']);
+			console.log(eligiblePokemon[i2].name + ": " + matchNumbers.find((mn) => mn['id'] === eligiblePokemon[i2].id)['match_number']);
+
 			this.setState({
-				currentPokemon1: eligiblePokemon[id1],
-				currentPokemon2: eligiblePokemon[id2],
+				currentPokemon1: eligiblePokemon[i1],
+				currentPokemon2: eligiblePokemon[i2],
 			});
 		})();
 	}
