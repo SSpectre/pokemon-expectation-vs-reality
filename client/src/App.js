@@ -63,8 +63,6 @@ export default class App extends React.Component {
 
 			let lowestMatchNumber = lowestPokemon['match_number'];
 
-			console.log("Lowest: " + lowestMatchNumber + "\nSecond lowest: " + secondLowest);
-
 			let eligiblePokemon;
 			let i1;
 			let i2;
@@ -90,16 +88,14 @@ export default class App extends React.Component {
 				});
 
 				//guarantee the pokemon with lowest match number is picked
-				i1 = lowestPokemon['id'] - 1;
+				let guaranteedPokemon = eligiblePokemon.find((pokemon) => pokemon.id === lowestPokemon['id']);
+				i1 = eligiblePokemon.indexOf(guaranteedPokemon);
 
 				//prevent self-matchups
 				do {
 					i2 = Math.floor(Math.random() * eligiblePokemon.length);
 				} while (i2 === i1);
 			}
-
-			console.log(eligiblePokemon[i1].name + ": " + matchNumbers.find((mn) => mn['id'] === eligiblePokemon[i1].id)['match_number']);
-			console.log(eligiblePokemon[i2].name + ": " + matchNumbers.find((mn) => mn['id'] === eligiblePokemon[i2].id)['match_number']);
 
 			this.setState({
 				currentPokemon1: eligiblePokemon[i1],
