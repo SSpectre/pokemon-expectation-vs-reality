@@ -41,7 +41,7 @@ export default class App extends React.Component {
 	selectNewPokemon() {
 		let matchNumbers;
 		(async () => {
-			let json = await fetch("/pokemon-expectation-vs-reality/matches");
+			let json = await fetch("/pokemon-expectation-vs-reality/matches", {cache: 'no-cache'});
 			matchNumbers = await json.json();
 
 			//find the pokemon with the lowest number of matches
