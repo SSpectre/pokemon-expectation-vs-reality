@@ -189,6 +189,10 @@ button.selected, button.selected:hover {
   margin: 1em;
 }
 
+#gmax-note {
+  margin-block: revert;
+}
+
 .ranking-parent {
   text-align: center;
 }

@@ -116,7 +116,7 @@ export default class App extends React.Component {
 			let gmaxNote = '';
 			if (this.state.currentPokemon1.name.match(/-Gigantamax$/g) || this.state.currentPokemon2.name.match(/-Gigantamax$/g)) {
 				gmaxNote = (
-					<h4>
+					<h4 id='gmax-note'>
 						*Gigantamax Pokémon have double HP, but this doesn't affect base stats
 					</h4>
 				)
