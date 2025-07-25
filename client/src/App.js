@@ -113,6 +113,15 @@ export default class App extends React.Component {
 			let imageUrl1 = this.state.currentPokemon1.image_url;
 			let imageUrl2 = this.state.currentPokemon2.image_url;
 
+			let gmaxNote = '';
+			if (this.state.currentPokemon1.name.match(/-Gigantamax$/g) || this.state.currentPokemon2.name.match(/-Gigantamax$/g)) {
+				gmaxNote = (
+					<h4>
+						*Gigantamax Pokémon have double HP, but this doesn't affect base stats
+					</h4>
+				)
+			}
+
 			//database has a separate naming convention from that displayed to the user
 			let stats = ['HP', 'Attack', 'Defense', 'Special Attack', 'Special Defense', 'Speed'];
 			let dbStats = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed'];
@@ -160,6 +169,7 @@ export default class App extends React.Component {
 						<button onClick={this.selectNewPokemon}>
 							Compare more Pokémon
 						</button>
+						{gmaxNote}
 					</div>
 					<RankingTable
 						stats={stats}

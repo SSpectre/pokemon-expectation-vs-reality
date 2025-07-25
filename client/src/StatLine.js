@@ -11,7 +11,9 @@ export default class StatLine extends React.Component {
 
         this.state = {
             statClass1: classes.class1,
+            gmax1: classes.gmax1,
             statClass2: classes.class2,
+            gmax2: classes.gmax2,
             selected: -1
         };
 
@@ -25,7 +27,9 @@ export default class StatLine extends React.Component {
 
             this.setState({
                 statClass1: classes.class1,
+                gmax1: classes.gmax1,
                 statClass2: classes.class2,
+                gmax2: classes.gmax2,
                 selected: -1
             });
         }
@@ -40,6 +44,8 @@ export default class StatLine extends React.Component {
         let stat2 = this.props.pokemon2.stats[this.props.index]['base_stat'];
         let statClass1 = 'equal-stat';
         let statClass2 = 'equal-stat';
+        let isGmax1 = false;
+        let isGmax2 = false;
 
         //if the stats are equal, the class will stay as 'equal-stat'
         if (stat1 > stat2) {
@@ -50,9 +56,18 @@ export default class StatLine extends React.Component {
             statClass2 = 'higher-stat';
         }
 
+        if (this.props.pokemon1.name.match(/-Gigantamax$/g)) {
+            isGmax1 = true;
+        }
+        if (this.props.pokemon2.name.match(/-Gigantamax$/g)) {
+            isGmax2 = true;
+        }
+
         let classes = {
             class1: statClass1,
-            class2: statClass2
+            gmax1: isGmax1,
+            class2: statClass2,
+            gmax2: isGmax2
         }
 
         return classes;
@@ -82,15 +97,17 @@ export default class StatLine extends React.Component {
     }
 
     render() {
+        let hpStat = this.props.name === 'HP';
+
         return (
             <>
                 <tr>
                     <td className={'main-section-header ' + this.state.statClass1 + (this.state.selected >= 0 ? ' visible' : ' invisible')}>
-                        {this.props.pokemon1.stats[this.props.index]['base_stat']}
+                        {this.props.pokemon1.stats[this.props.index]['base_stat'] + (hpStat && this.state.gmax1 ? '*' : '')}
                     </td>
                     <td className='main-section-header center-column'>...{this.props.name}?</td>
                     <td className={'main-section-header ' + this.state.statClass2 + (this.state.selected >= 0 ? ' visible' : ' invisible')}>
-                        {this.props.pokemon2.stats[this.props.index]['base_stat']}
+                        {this.props.pokemon2.stats[this.props.index]['base_stat'] + (hpStat && this.state.gmax2 ? '*' : '')}
                     </td>
                 </tr>
                 <tr>
