@@ -230,7 +230,7 @@ select {
   .main-section {
     width: 90%;
   }
-  table {
+  table, h4 {
     font-size: 0.9em;
   }
 }
@@ -243,7 +243,7 @@ select {
 }
 
 @media (max-width: 500px) {
-  table {
+  table, h4 {
     font-size: 0.8em;
   }
 }
@@ -259,7 +259,7 @@ select {
     max-width: 40px;
     max-height: 40px;
   }
-  table {
+  table, h4 {
     font-size: 0.7em;
   }
 }
