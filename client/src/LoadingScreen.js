@@ -2,8 +2,9 @@ import React from 'react';
 
 /**
  * A component for a simple loading animation
+ * @memberof module:pokemon-expectation-vs-reality/client
  */
-export default class LoadingScreen extends React.Component {
+class LoadingScreen extends React.Component {
     constructor(props) {
 		super(props);
 
@@ -54,3 +55,5 @@ export default class LoadingScreen extends React.Component {
         );
     }
 }
+
+export default LoadingScreen;

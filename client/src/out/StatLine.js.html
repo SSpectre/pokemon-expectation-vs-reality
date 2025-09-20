@@ -1,4 +1,32 @@
-import React from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: StatLine.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: StatLine.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
 
 /**
  * A component containing the information and logic for comparing a single stat between two Pokemon.
@@ -52,7 +80,7 @@ class StatLine extends React.Component {
         if (stat1 > stat2) {
             statClass1 = 'higher-stat';
             statClass2 = 'lower-stat';
-        } else if (stat1 < stat2) {
+        } else if (stat1 &lt; stat2) {
             statClass1 = 'lower-stat';
             statClass2 = 'higher-stat';
         }
@@ -101,42 +129,64 @@ class StatLine extends React.Component {
         let hpStat = this.props.name === 'HP';
 
         return (
-            <>
-                <tr>
-                    <td className={'main-section-header ' + this.state.statClass1 + (this.state.selected >= 0 ? ' visible' : ' invisible')}>
-                        {this.props.pokemon1.stats[this.props.index]['base_stat'] + (hpStat && this.state.gmax1 ? '*' : '')}
-                    </td>
-                    <td className='main-section-header center-column'>...{this.props.name}?</td>
-                    <td className={'main-section-header ' + this.state.statClass2 + (this.state.selected >= 0 ? ' visible' : ' invisible')}>
-                        {this.props.pokemon2.stats[this.props.index]['base_stat'] + (hpStat && this.state.gmax2 ? '*' : '')}
-                    </td>
-                </tr>
-                <tr>
-                    <td className='main-section-header line-break'>
-                        <button className={this.state.selected === 1 ? 'selected' : ''} id = {'button-' + this.props.index + '-1'}
+            &lt;>
+                &lt;tr>
+                    &lt;td className={'main-section-header ' + this.state.statClass1 + (this.state.selected >= 0 ? ' visible' : ' invisible')}>
+                        {this.props.pokemon1.stats[this.props.index]['base_stat'] + (hpStat &amp;&amp; this.state.gmax1 ? '*' : '')}
+                    &lt;/td>
+                    &lt;td className='main-section-header center-column'>...{this.props.name}?&lt;/td>
+                    &lt;td className={'main-section-header ' + this.state.statClass2 + (this.state.selected >= 0 ? ' visible' : ' invisible')}>
+                        {this.props.pokemon2.stats[this.props.index]['base_stat'] + (hpStat &amp;&amp; this.state.gmax2 ? '*' : '')}
+                    &lt;/td>
+                &lt;/tr>
+                &lt;tr>
+                    &lt;td className='main-section-header line-break'>
+                        &lt;button className={this.state.selected === 1 ? 'selected' : ''} id = {'button-' + this.props.index + '-1'}
                             onClick={() => {this.selectOption(1)}} disabled={this.state.selected >= 0}
                         >
                             {this.props.pokemon1.name}
-                        </button>
-                    </td>
-                    <td className='main-section-header line-break'>
-                        <button className={this.state.selected === 0 ? 'selected' : ''} id = {'button-' + this.props.index + '-unsure'}
+                        &lt;/button>
+                    &lt;/td>
+                    &lt;td className='main-section-header line-break'>
+                        &lt;button className={this.state.selected === 0 ? 'selected' : ''} id = {'button-' + this.props.index + '-unsure'}
                             onClick={() => {this.selectOption(0)}} disabled={this.state.selected >= 0}
                         >
                             I'm not sure
-                        </button>
-                    </td>
-                    <td className='main-section-header line-break'>
-                        <button className={this.state.selected === 2 ? 'selected' : ''} id = {'button-' + this.props.index + '-2'}
+                        &lt;/button>
+                    &lt;/td>
+                    &lt;td className='main-section-header line-break'>
+                        &lt;button className={this.state.selected === 2 ? 'selected' : ''} id = {'button-' + this.props.index + '-2'}
                             onClick={() => {this.selectOption(2)}} disabled={this.state.selected >= 0}
                         >
                             {this.props.pokemon2.name}
-                        </button>
-                    </td>
-                </tr>
-            </>
+                        &lt;/button>
+                    &lt;/td>
+                &lt;/tr>
+            &lt;/>
         );
     }
 }
 
-export default StatLine;
+export default StatLine;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pokemon-expectation-vs-reality_client.html">pokemon-expectation-vs-reality/client</a></li></ul><h3>Classes</h3><ul><li><a href="module-pokemon-expectation-vs-reality_client.App.html">App</a></li><li><a href="module-pokemon-expectation-vs-reality_client.LoadingScreen.html">LoadingScreen</a></li><li><a href="module-pokemon-expectation-vs-reality_client.RankingTable.html">RankingTable</a></li><li><a href="module-pokemon-expectation-vs-reality_client.StatLine.html">StatLine</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Sep 20 2025 14:41:49 GMT-0400 (Eastern Daylight Saving Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

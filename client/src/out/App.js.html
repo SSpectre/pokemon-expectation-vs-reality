@@ -1,4 +1,32 @@
-import React from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
 import StatLine from './StatLine';
 import RankingTable from './RankingTable';
 import LoadingScreen from './LoadingScreen';
@@ -49,12 +77,12 @@ class App extends React.Component {
 			//second lowest is also found to determine if more than one pokemon has the lowest match number
 			let secondLowest = Infinity;
 			let lowestPokemon = matchNumbers.reduce((currentLowest, pokemon) => {
-				if (pokemon['match_number'] <= currentLowest['match_number']) {
+				if (pokemon['match_number'] &lt;= currentLowest['match_number']) {
 					secondLowest = currentLowest['match_number'];
 					return pokemon;
 				}
 				else {
-					if (pokemon['match_number'] < secondLowest) {
+					if (pokemon['match_number'] &lt; secondLowest) {
 						secondLowest = pokemon['match_number'];
 					}
 
@@ -85,7 +113,7 @@ class App extends React.Component {
 				//only one pokemon has the lowest match number, so we need to filter for both the lowest and second lowest
 				eligiblePokemon = this.state.pokemonList.filter((pokemon) => {
 					let matchNumber = matchNumbers.find((mn) => mn['id'] === pokemon.id);
-					return matchNumber['match_number'] <= secondLowest;
+					return matchNumber['match_number'] &lt;= secondLowest;
 				});
 
 				//guarantee the pokemon with lowest match number is picked
@@ -107,7 +135,7 @@ class App extends React.Component {
 
 	render() {
 		//display a loading screen if Pokemon haven't been selected yet
-		let loaded = this.state.currentPokemon1 && this.state.currentPokemon2;
+		let loaded = this.state.currentPokemon1 &amp;&amp; this.state.currentPokemon2;
 		let content;
 
 		if (loaded) {
@@ -117,9 +145,9 @@ class App extends React.Component {
 			let gmaxNote = '';
 			if (this.state.currentPokemon1.name.match(/-Gigantamax$/g) || this.state.currentPokemon2.name.match(/-Gigantamax$/g)) {
 				gmaxNote = (
-					<h4 id='gmax-note'>
+					&lt;h4 id='gmax-note'>
 						*Gigantamax Pokémon have double HP, but this doesn't affect base stats
-					</h4>
+					&lt;/h4>
 				)
 			}
 
@@ -136,27 +164,27 @@ class App extends React.Component {
 			})
 
 		 	content = (
-				<div>
-					<div id='pokemon-images'>
-						<div>
-							<img
+				&lt;div>
+					&lt;div id='pokemon-images'>
+						&lt;div>
+							&lt;img
 								className='pokemon-img'
 								src={imageUrl1}
 								alt={this.state.currentPokemon1.name}
 							/>
-						</div>
-						<div>
-							<img
+						&lt;/div>
+						&lt;div>
+							&lt;img
 								className='pokemon-img'
 								src={imageUrl2}
 								alt={this.state.currentPokemon2.name}
 							/>
-						</div>
-					</div>
-					<table className='main-section'>
-						<caption className='line-break'>Based on appearance alone, which Pokémon looks like it should have higher...</caption>
-						<tbody className='main-section-body'>
-							{stats.map((stat, i) => <StatLine
+						&lt;/div>
+					&lt;/div>
+					&lt;table className='main-section'>
+						&lt;caption className='line-break'>Based on appearance alone, which Pokémon looks like it should have higher...&lt;/caption>
+						&lt;tbody className='main-section-body'>
+							{stats.map((stat, i) => &lt;StatLine
 								key={stat}
 								index={i}
 								name={stat}
@@ -164,34 +192,56 @@ class App extends React.Component {
 								pokemon1={this.state.currentPokemon1}
 								pokemon2={this.state.currentPokemon2}
 							/>)}
-						</tbody>
-					</table>
-					<div id='end-buttons'>
-						<button onClick={this.selectNewPokemon}>
+						&lt;/tbody>
+					&lt;/table>
+					&lt;div id='end-buttons'>
+						&lt;button onClick={this.selectNewPokemon}>
 							Compare more Pokémon
-						</button>
+						&lt;/button>
 						{gmaxNote}
-					</div>
-					<RankingTable
+					&lt;/div>
+					&lt;RankingTable
 						stats={stats}
 						dbFormattedStats={dbStats}
 						sortedLists={this.state.sortedLists}
 						imageList={imageList}
 					/>
-				</div>
+				&lt;/div>
 			);
 		} else {
 			content = (
-				<LoadingScreen />
+				&lt;LoadingScreen />
 			);
 		}
 
 		return (
-			<div>
+			&lt;div>
 				{content}
-			</div>
+			&lt;/div>
 		);
 	}
 }
 
-export default App;
+export default App;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pokemon-expectation-vs-reality_client.html">pokemon-expectation-vs-reality/client</a></li></ul><h3>Classes</h3><ul><li><a href="module-pokemon-expectation-vs-reality_client.App.html">App</a></li><li><a href="module-pokemon-expectation-vs-reality_client.LoadingScreen.html">LoadingScreen</a></li><li><a href="module-pokemon-expectation-vs-reality_client.RankingTable.html">RankingTable</a></li><li><a href="module-pokemon-expectation-vs-reality_client.StatLine.html">StatLine</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Sep 20 2025 14:41:49 GMT-0400 (Eastern Daylight Saving Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

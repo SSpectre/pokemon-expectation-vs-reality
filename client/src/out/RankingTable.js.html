@@ -1,4 +1,32 @@
-import React from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: RankingTable.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: RankingTable.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
 import {FaArrowUp, FaArrowDown, FaMinus, FaSort, FaCaretUp, FaCaretDown} from 'react-icons/fa';
 
 /**
@@ -47,13 +75,13 @@ class RankingTable extends React.Component {
     getRanking(stat) {
         (async () => {
             let asc = this.state.ascending ? 1 : '';
-            let json = await fetch(`/pokemon-expectation-vs-reality/ranking?stat=${stat}&asc=${asc}`);
+            let json = await fetch(`/pokemon-expectation-vs-reality/ranking?stat=${stat}&amp;asc=${asc}`);
             let result = await json.json();
 
             //database replaces spaces with underscores while API uses hyphens
             stat = stat.replace('_', '-');
 
-            for (let i = 0; i < result.length; i++) {
+            for (let i = 0; i &lt; result.length; i++) {
                 if (asc) {
                     result[i].community = result.length - (i+1);
                 }
@@ -158,56 +186,56 @@ class RankingTable extends React.Component {
         let loaded = pokemonList.length > 1;
 
         return (
-            <div className='ranking-parent'>
-                <h1>Rankings</h1>
-                <label htmlFor='stats'>Stat:</label>
-                <select name='stats' id='stat-dropdown' onChange={this.selectStat}>
+            &lt;div className='ranking-parent'>
+                &lt;h1>Rankings&lt;/h1>
+                &lt;label htmlFor='stats'>Stat:&lt;/label>
+                &lt;select name='stats' id='stat-dropdown' onChange={this.selectStat}>
                     {stats.map((stat, i) => (
-                        <option key={stat} value={dbStats[i]}>
+                        &lt;option key={stat} value={dbStats[i]}>
                             {stat}
-                        </option>
+                        &lt;/option>
                     ))}
-                </select>
-                <table className='ranking-table'>
-                    <thead className='ranking-header'>
-                        <tr>
-                            <th className='ranking-header-cell sort-header' onClick={() => this.selectSort('community')}>
-                                <span className='sort-header'>
-                                    <span className='sort-header-title'>Rank</span>
-                                    {this.state.sortBy === 'community' ? (this.state.ascending ? <FaCaretUp /> : <FaCaretDown />) : <FaSort />}
-                                </span>
-                            </th>
-                            <th className='ranking-header-cell'>
+                &lt;/select>
+                &lt;table className='ranking-table'>
+                    &lt;thead className='ranking-header'>
+                        &lt;tr>
+                            &lt;th className='ranking-header-cell sort-header' onClick={() => this.selectSort('community')}>
+                                &lt;span className='sort-header'>
+                                    &lt;span className='sort-header-title'>Rank&lt;/span>
+                                    {this.state.sortBy === 'community' ? (this.state.ascending ? &lt;FaCaretUp /> : &lt;FaCaretDown />) : &lt;FaSort />}
+                                &lt;/span>
+                            &lt;/th>
+                            &lt;th className='ranking-header-cell'>
                                 Pokémon
-                            </th>
-                            <th className='ranking-header-cell sort-header' onClick={() => this.selectSort('real')}>
-                                <span className='sort-header'>
-                                    <span className='sort-header-title'>Real Rank</span>
-                                    {this.state.sortBy === 'real' ? (this.state.ascending ? <FaCaretUp /> : <FaCaretDown />) : <FaSort />}
-                                </span>
-                            </th>
-                            <th className='ranking-header-cell sort-header' onClick={() => this.selectSort('change')}>
-                                <span className='sort-header'>
-                                    <span className='sort-header-title'>Change</span>
-                                    {this.state.sortBy === 'change' ? (this.state.ascending ? <FaCaretUp /> : <FaCaretDown />) : <FaSort />}
-                                </span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className='ranking-body'>
+                            &lt;/th>
+                            &lt;th className='ranking-header-cell sort-header' onClick={() => this.selectSort('real')}>
+                                &lt;span className='sort-header'>
+                                    &lt;span className='sort-header-title'>Real Rank&lt;/span>
+                                    {this.state.sortBy === 'real' ? (this.state.ascending ? &lt;FaCaretUp /> : &lt;FaCaretDown />) : &lt;FaSort />}
+                                &lt;/span>
+                            &lt;/th>
+                            &lt;th className='ranking-header-cell sort-header' onClick={() => this.selectSort('change')}>
+                                &lt;span className='sort-header'>
+                                    &lt;span className='sort-header-title'>Change&lt;/span>
+                                    {this.state.sortBy === 'change' ? (this.state.ascending ? &lt;FaCaretUp /> : &lt;FaCaretDown />) : &lt;FaSort />}
+                                &lt;/span>
+                            &lt;/th>
+                        &lt;/tr>
+                    &lt;/thead>
+                    &lt;tbody className='ranking-body'>
                         {pokemonList.map((pokemon, i) => {
                             let changeDirection;
                             let changeClass;
                             if (pokemon.change > 0) {
-                                changeDirection = <FaArrowUp />;
+                                changeDirection = &lt;FaArrowUp />;
                                 changeClass = ' higher-stat';
                             }
                             else if (pokemon.change === 0) {
-                                changeDirection = <FaMinus />;
+                                changeDirection = &lt;FaMinus />;
                                 changeClass = '';
                             }
                             else {
-                                changeDirection = <FaArrowDown />;
+                                changeDirection = &lt;FaArrowDown />;
                                 changeClass = ' lower-stat';
                             }
 
@@ -223,35 +251,57 @@ class RankingTable extends React.Component {
                                     imageUrl = null;
                                 }
                                 
-                                image = (<img src={imageUrl} alt={pokemon.name} className='ranking-img'/>);
+                                image = (&lt;img src={imageUrl} alt={pokemon.name} className='ranking-img'/>);
                             }
 
                             return (
-                                <tr key={pokemon.id}>
-                                    <td className='ranking-body-cell'>{pokemon.community+1}</td>
-                                    <td className='ranking-body-cell name'>
-                                        <figure>
+                                &lt;tr key={pokemon.id}>
+                                    &lt;td className='ranking-body-cell'>{pokemon.community+1}&lt;/td>
+                                    &lt;td className='ranking-body-cell name'>
+                                        &lt;figure>
                                             {image}
-                                            <figcaption>{pokemon.name}</figcaption>
-                                        </figure>
-                                    </td>
-                                    <td className='ranking-body-cell'>{pokemon.real + 1}</td>
-                                    <td className={'ranking-body-cell change' + changeClass}>
-                                        <div className='change'>
-                                            <span className='change'>
+                                            &lt;figcaption>{pokemon.name}&lt;/figcaption>
+                                        &lt;/figure>
+                                    &lt;/td>
+                                    &lt;td className='ranking-body-cell'>{pokemon.real + 1}&lt;/td>
+                                    &lt;td className={'ranking-body-cell change' + changeClass}>
+                                        &lt;div className='change'>
+                                            &lt;span className='change'>
                                                 {changeDirection}
-                                                <span className='change-amount'>{' ' + Math.abs(pokemon.change)}</span>
-                                            </span>
-                                        </div>
-                                    </td>
-                                </tr>
+                                                &lt;span className='change-amount'>{' ' + Math.abs(pokemon.change)}&lt;/span>
+                                            &lt;/span>
+                                        &lt;/div>
+                                    &lt;/td>
+                                &lt;/tr>
                             )
                         })}
-                    </tbody>
-                </table>
-            </div>
+                    &lt;/tbody>
+                &lt;/table>
+            &lt;/div>
         );
     }
 }
 
-export default RankingTable;
+export default RankingTable;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pokemon-expectation-vs-reality_client.html">pokemon-expectation-vs-reality/client</a></li></ul><h3>Classes</h3><ul><li><a href="module-pokemon-expectation-vs-reality_client.App.html">App</a></li><li><a href="module-pokemon-expectation-vs-reality_client.LoadingScreen.html">LoadingScreen</a></li><li><a href="module-pokemon-expectation-vs-reality_client.RankingTable.html">RankingTable</a></li><li><a href="module-pokemon-expectation-vs-reality_client.StatLine.html">StatLine</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Sep 20 2025 14:41:49 GMT-0400 (Eastern Daylight Saving Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
