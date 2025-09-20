@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PokemonAdapter.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PokemonAdapter.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Static class for making alterations to the Pokemon list retrieved from PokeAPI so they will fit with other systems
  *  * @memberof module:pokemon-expectation-vs-reality/server
  */
@@ -33,27 +61,27 @@ class PokemonAdapter {
 				let result = true;
 
 				result = !tempName.match(/-totem/g);
-				result = result && !tempName.match(/-cap$/g);
-				result = result && !tempName.match(/-cosplay$/g);
-				result = result && !tempName.match(/castform-/g);
-				result = result && !tempName.match(/-battle-bond$/g);
-				result = result && !tempName.match(/-eternal$/g);
-				result = result && !tempName.match(/minior-(?!red)/g);
-				result = result && !tempName.match(/-power-construct$/g);
-				result = result && !tempName.match(/-own-tempo$/g);
-				result = result && !tempName.match(/-busted$/g);
-				result = result && !tempName.match(/-original$/g);
-				result = result && !tempName.match(/cramorant-/g);
-				result = result && !tempName.match(/-low-key-gmax$/g);
-				result = result && !tempName.match(/-eternamax$/g);
-				result = result && !tempName.match(/-dada$/g);
-				result = result && !tempName.match(/-bloodmoon$/g);
-				result = result && !tempName.match(/-family-of-three$/g);
-				result = result && !tempName.match(/squawkabilly-/g);
-				result = result && !tempName.match(/-three-segment$/g);
-				result = result && !tempName.match(/koraidon-/g);
-				result = result && !tempName.match(/miraidon-/g);
-				result = result && !tempName.match(/ogerpon-/g);
+				result = result &amp;&amp; !tempName.match(/-cap$/g);
+				result = result &amp;&amp; !tempName.match(/-cosplay$/g);
+				result = result &amp;&amp; !tempName.match(/castform-/g);
+				result = result &amp;&amp; !tempName.match(/-battle-bond$/g);
+				result = result &amp;&amp; !tempName.match(/-eternal$/g);
+				result = result &amp;&amp; !tempName.match(/minior-(?!red)/g);
+				result = result &amp;&amp; !tempName.match(/-power-construct$/g);
+				result = result &amp;&amp; !tempName.match(/-own-tempo$/g);
+				result = result &amp;&amp; !tempName.match(/-busted$/g);
+				result = result &amp;&amp; !tempName.match(/-original$/g);
+				result = result &amp;&amp; !tempName.match(/cramorant-/g);
+				result = result &amp;&amp; !tempName.match(/-low-key-gmax$/g);
+				result = result &amp;&amp; !tempName.match(/-eternamax$/g);
+				result = result &amp;&amp; !tempName.match(/-dada$/g);
+				result = result &amp;&amp; !tempName.match(/-bloodmoon$/g);
+				result = result &amp;&amp; !tempName.match(/-family-of-three$/g);
+				result = result &amp;&amp; !tempName.match(/squawkabilly-/g);
+				result = result &amp;&amp; !tempName.match(/-three-segment$/g);
+				result = result &amp;&amp; !tempName.match(/koraidon-/g);
+				result = result &amp;&amp; !tempName.match(/miraidon-/g);
+				result = result &amp;&amp; !tempName.match(/ogerpon-/g);
 
 				return result;
 			})
@@ -63,19 +91,19 @@ class PokemonAdapter {
 				let result = true;
 
 				result = !tempName.match(/-totem/g);
-				result = result && !tempName.match(/-cap$/g);
-				result = result && !tempName.match(/-cosplay$/g);
-				result = result && !tempName.match(/-battle-bond$/g);
-				result = result && !tempName.match(/minior-(?!red)/g);
-				result = result && !tempName.match(/-power-construct$/g);
-				result = result && !tempName.match(/-own-tempo$/g);
-				result = result && !tempName.match(/-busted$/g);
-				result = result && !tempName.match(/-original$/g);
-				result = result && !tempName.match(/cramorant-/g);
-				result = result && !tempName.match(/-low-key-gmax$/g);
-				result = result && !tempName.match(/-dada$/g);
-				result = result && !tempName.match(/koraidon-/g);
-				result = result && !tempName.match(/miraidon-/g);
+				result = result &amp;&amp; !tempName.match(/-cap$/g);
+				result = result &amp;&amp; !tempName.match(/-cosplay$/g);
+				result = result &amp;&amp; !tempName.match(/-battle-bond$/g);
+				result = result &amp;&amp; !tempName.match(/minior-(?!red)/g);
+				result = result &amp;&amp; !tempName.match(/-power-construct$/g);
+				result = result &amp;&amp; !tempName.match(/-own-tempo$/g);
+				result = result &amp;&amp; !tempName.match(/-busted$/g);
+				result = result &amp;&amp; !tempName.match(/-original$/g);
+				result = result &amp;&amp; !tempName.match(/cramorant-/g);
+				result = result &amp;&amp; !tempName.match(/-low-key-gmax$/g);
+				result = result &amp;&amp; !tempName.match(/-dada$/g);
+				result = result &amp;&amp; !tempName.match(/koraidon-/g);
+				result = result &amp;&amp; !tempName.match(/miraidon-/g);
 
 				return result;
 			})
@@ -183,4 +211,26 @@ class PokemonAdapter {
     }
 }
 
-export default PokemonAdapter;
+export default PokemonAdapter;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-pokemon-expectation-vs-reality_server.html">pokemon-expectation-vs-reality/server</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-pokemon-expectation-vs-reality_server-serverRoutes.html">serverRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="PokemonAdapter.html">PokemonAdapter</a></li><li><a href="module-pokemon-expectation-vs-reality_server.DatabaseAPI.html">DatabaseAPI</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Sep 20 2025 14:33:20 GMT-0400 (Eastern Daylight Saving Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
