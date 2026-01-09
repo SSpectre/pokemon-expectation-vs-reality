@@ -60,6 +60,7 @@ class PokemonAdapter {
 		} else {
 			filteredPokemon = originalList.filter((value, index, arr) => {
 				let tempName = value.name;
+				let imageBase = value.sprites.other;
 				let result = true;
 
 				result = !tempName.match(/-totem/g);
@@ -76,6 +77,8 @@ class PokemonAdapter {
 				result = result && !tempName.match(/-dada$/g);
 				result = result && !tempName.match(/koraidon-/g);
 				result = result && !tempName.match(/miraidon-/g);
+
+				result = result && imageBase['official-artwork']['front_default'];
 
 				return result;
 			})
