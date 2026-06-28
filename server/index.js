@@ -147,13 +147,6 @@ app.get("/pokemon-expectation-vs-reality/ranking", async (req, res) => {
  */
 app.listen(PORT, function() {
     (async () => {
-		//fetch urls to pokemon objects from PokeAPI
-		//const json = await fetchJson('https://pokeapi.co/api/v2/pokemon?limit=2000');
-		//const pokemonUrls = await json.results;
-
-		//limit to 400 simultaneous API requests
-		//const limit = pLimit(400);
-
 		const query = `query getPokemon {
 			pokemon(
 			  	order_by: {id: asc}
@@ -173,16 +166,14 @@ app.listen(PORT, function() {
 		}`;
 
 		const json = await fetchJson("https://graphql.pokeapi.co/v1beta2", query)
+		pokemonList = json.data.pokemon;
 
-		//populate Pokemon list with JSON Objects from PokeAPI
-		/* pokemonList = await Promise.all(
-			pokemonUrls.map(async (pokemon) => {
-				return await limit(() => fetchJson(pokemon.url));
-			})
-		); */
+		for (const pokemon of pokemonList) {
+			pokemon.sprites = pokemon.pokemonsprites[0].sprites;
+			const {pokemonsprites, ...newPokemon} = pokemon;
+		}
 
 		pokemonList = PokemonAdapter.performAllActions(pokemonList, false);
-
 		
 		for (const pokemon of pokemonList) {
 			//associate an image URL with each Pokemon
@@ -218,11 +209,10 @@ function fetchJson(url, query) {
 		body: JSON.stringify({query})
 	})
 	.then(
-		(result) => {
+		async (result) => {
 			try {
-				const response = result.json();
-				const json = JSON.stringify(response);
-				return json;
+				const response = await result.json();
+				return response;
 			} catch (e) {
 				console.error(e);
 				return {};
@@ -245,7 +235,7 @@ function getImageUrl(pokemon) {
 	if (useDBForImages) {
 		imageUrl = 'https://img.pokemondb.net/artwork/' + pokemon.name + '.jpg'
 	} else {
-		let imageBase = pokemon.pokemonsprites.sprites.other
+		let imageBase = pokemon.sprites.other
 		imageUrl = imageBase['official-artwork']['front_default'];
 	}
 
