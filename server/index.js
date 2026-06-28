@@ -194,9 +194,14 @@ function fetchJson(url) {
 	console.log("Fetching " + url);
 	let response = fetch(url)
 	.then(
-		(result) => {
-			const json = result.json();
-			return json;
+		async (result) => {
+			try {
+				const json = result.json();
+				return await json;
+			} catch (e) {
+				console.error(e);
+				return {};
+			}
 		}
 	);
 
