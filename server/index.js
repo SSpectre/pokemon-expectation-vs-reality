@@ -168,6 +168,7 @@ app.listen(PORT, function() {
 		const json = await fetchJson("https://graphql.pokeapi.co/v1beta2", query)
 		pokemonList = json.data.pokemon;
 
+		//PokeAPI GraphQL stores its sprites heavily nested, so we move them up the hierarchy
 		for (const pokemon of pokemonList) {
 			pokemon.sprites = pokemon.pokemonsprites[0].sprites;
 			const {pokemonsprites, ...newPokemon} = pokemon;
@@ -197,8 +198,9 @@ app.listen(PORT, function() {
 });
 
 /**
- * Wrapper function for fetch requests retrieving and parsing JSON from third-party sites.
+ * Wrapper function for fetch requests retrieving and parsing JSON from third-party sites using GraphQL.
  * @param {string} url The URL to send the request to.
+ * @param {string} query The GraphQL query to use
  * @returns {Promise<Object>} A Promise representing a JSON object.
  */
 function fetchJson(url, query) {
