@@ -42,7 +42,7 @@ class PokemonAdapter {
 				result = result && !tempName.match(/-power-construct$/g);
 				result = result && !tempName.match(/-own-tempo$/g);
 				result = result && !tempName.match(/-busted$/g);
-				result = result && !tempName.match(/-original$/g);
+				result = result && !tempName.match(/magearna-original/g);
 				result = result && !tempName.match(/cramorant-/g);
 				result = result && !tempName.match(/-low-key-gmax$/g);
 				result = result && !tempName.match(/-eternamax$/g);
@@ -71,7 +71,7 @@ class PokemonAdapter {
 				result = result && !tempName.match(/-power-construct$/g);
 				result = result && !tempName.match(/-own-tempo$/g);
 				result = result && !tempName.match(/-busted$/g);
-				result = result && !tempName.match(/-original$/g);
+				result = result && !tempName.match(/magearna-original/g);
 				result = result && !tempName.match(/cramorant-/g);
 				result = result && !tempName.match(/-low-key-gmax$/g);
 				result = result && !tempName.match(/-dada$/g);
