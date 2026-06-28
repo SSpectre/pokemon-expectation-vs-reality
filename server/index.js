@@ -148,18 +148,38 @@ app.get("/pokemon-expectation-vs-reality/ranking", async (req, res) => {
 app.listen(PORT, function() {
     (async () => {
 		//fetch urls to pokemon objects from PokeAPI
-		const json = await fetchJson('https://pokeapi.co/api/v2/pokemon?limit=2000');
-		const pokemonUrls = await json.results;
+		//const json = await fetchJson('https://pokeapi.co/api/v2/pokemon?limit=2000');
+		//const pokemonUrls = await json.results;
 
 		//limit to 400 simultaneous API requests
-		const limit = pLimit(400);
+		//const limit = pLimit(400);
+
+		const query = `query getPokemon {
+			pokemon(
+			  	order_by: {id: asc}
+			) {
+				name
+				id
+				stats: pokemonstats {
+					base_stat
+					stat {
+					name
+					}
+				}
+				pokemonsprites {
+					sprites
+				}
+			}
+		}`;
+
+		const json = await fetchJson("https://graphql.pokeapi.co/v1beta2", query)
 
 		//populate Pokemon list with JSON Objects from PokeAPI
-		pokemonList = await Promise.all(
+		/* pokemonList = await Promise.all(
 			pokemonUrls.map(async (pokemon) => {
 				return await limit(() => fetchJson(pokemon.url));
 			})
-		);
+		); */
 
 		pokemonList = PokemonAdapter.performAllActions(pokemonList, false);
 
@@ -190,14 +210,19 @@ app.listen(PORT, function() {
  * @param {string} url The URL to send the request to.
  * @returns {Promise<Object>} A Promise representing a JSON object.
  */
-function fetchJson(url) {
+function fetchJson(url, query) {
 	console.log("Fetching " + url);
-	let response = fetch(url)
+	let response = fetch(url, {
+		method: 'POST',
+		headers: {'Content-Type': 'aplication/json'},
+		body: JSON.stringify({query})
+	})
 	.then(
-		async (result) => {
+		(result) => {
 			try {
-				const json = result.json();
-				return await json;
+				const response = result.json();
+				const json = JSON.stringify(response);
+				return json;
 			} catch (e) {
 				console.error(e);
 				return {};
@@ -220,7 +245,7 @@ function getImageUrl(pokemon) {
 	if (useDBForImages) {
 		imageUrl = 'https://img.pokemondb.net/artwork/' + pokemon.name + '.jpg'
 	} else {
-		let imageBase = pokemon.sprites.other
+		let imageBase = pokemon.pokemonsprites.sprites.other
 		imageUrl = imageBase['official-artwork']['front_default'];
 	}
 
