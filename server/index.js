@@ -207,7 +207,7 @@ function fetchJson(url, query) {
 	console.log("Fetching " + url);
 	let response = fetch(url, {
 		method: 'POST',
-		headers: {'Content-Type': 'aplication/json'},
+		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify({query})
 	})
 	.then(
