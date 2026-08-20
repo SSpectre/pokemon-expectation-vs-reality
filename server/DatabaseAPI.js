@@ -1,4 +1,5 @@
 import sqlite3 from "sqlite3";
+import nodemailer from "nodemailer";
 
 /**
  * A class for interfacing with a SQL database containing Pokemon stat Elo information.
@@ -18,7 +19,13 @@ class DatabaseAPI {
      * @returns {Promise} A Promise which is resolved when an attempt to add every Pokemon in the list has been made.
      */
     addPokemon(list) {
+        const transporter = nodemailer.createTransport({
+            sendmail: true,
+            path: "/usr/bin/sendmail"
+        });
+
         return new Promise((resolve, reject) => {
+            let newPokemon = [];
             for (const pokemon of list) {
                 let sql = `INSERT INTO pokemon (id, name, hp, hp_match_number, hp_reached_threshold, attack, attack_match_number, attack_reached_threshold, 
                     defense, defense_match_number, defense_reached_threshold, special_attack, special_attack_match_number, special_attack_reached_threshold, 
@@ -32,6 +39,7 @@ class DatabaseAPI {
                             reject(err);
                         }
                         else
+                            newPokemon.push(pokemon.name);
                             resolve();
                     } catch (e) {
                         if (e instanceof TypeError) {
@@ -39,6 +47,27 @@ class DatabaseAPI {
                         }
                     }
                 });
+            }
+
+            if (newPokemon.length > 0) {
+                let emailMessage = newPokemon.join('\n');
+
+                transporter.sendMail(
+                    {
+                        from: "jordan@imlgames.com",
+                        to: "jordan.barron.hurst@gmail.com",
+                        subject: "New Pokémon added",
+                        text: "New Pokémon have been added to your apps:\n\n" + emailMessage,
+                    },
+                    (err, info) => {
+                        if (err) {
+                            console.error(err);
+                            return;
+                        }
+                        console.log(info.envelope);
+                        console.log(info.messageId);
+                    }
+                )
             }
         });
     }
