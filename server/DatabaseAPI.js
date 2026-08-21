@@ -18,58 +18,62 @@ class DatabaseAPI {
      * @param {Object[]} list Array of Pokemon objects to be added.
      * @returns {Promise} A Promise which is resolved when an attempt to add every Pokemon in the list has been made.
      */
-    addPokemon(list) {
-        const transporter = nodemailer.createTransport({
-            sendmail: true,
-            path: "/usr/bin/sendmail"
-        });
+    async addPokemon(list) {
+        let newPokemon = [];
+        let result = await Promise.all(
+            list.map((pokemon) => {
+                return new Promise((resolve, reject) => {
+                    let sql = `INSERT INTO pokemon (id, name, hp, hp_match_number, hp_reached_threshold, attack, attack_match_number, attack_reached_threshold, 
+                        defense, defense_match_number, defense_reached_threshold, special_attack, special_attack_match_number, special_attack_reached_threshold, 
+                        special_defense, special_defense_match_number, special_defense_reached_threshold, speed, speed_match_number, speed_reached_threshold)
+                        VALUES (${pokemon.id}, "${pokemon.name}", 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0)`;
 
-        return new Promise((resolve, reject) => {
-            let newPokemon = [];
-            for (const pokemon of list) {
-                let sql = `INSERT INTO pokemon (id, name, hp, hp_match_number, hp_reached_threshold, attack, attack_match_number, attack_reached_threshold, 
-                    defense, defense_match_number, defense_reached_threshold, special_attack, special_attack_match_number, special_attack_reached_threshold, 
-                    special_defense, special_defense_match_number, special_defense_reached_threshold, speed, speed_match_number, speed_reached_threshold)
-                    VALUES (${pokemon.id}, "${pokemon.name}", 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0, 1000, 0, 0)`;
-
-                this.db.run(sql, (err) => {
-                    try {
-                        if(err['code'] != 'SQLITE_CONSTRAINT') {
-                            //Pokemon already exists in the database
-                            reject(err);
-                        }
-                        else
-                            newPokemon.push(pokemon.name);
-                            resolve();
-                    } catch (e) {
-                        if (e instanceof TypeError) {
-                            console.log(sql);
-                        }
-                    }
-                });
-            }
-
-            if (newPokemon.length > 0) {
-                let emailMessage = newPokemon.join('\n');
-
-                transporter.sendMail(
-                    {
-                        from: "jordan@imlgames.com",
-                        to: "jordan.barron.hurst@gmail.com",
-                        subject: "New Pokémon added",
-                        text: "New Pokémon have been added to your apps:\n\n" + emailMessage,
-                    },
-                    (err, info) => {
+                    this.db.run(sql, (err) => {
                         if (err) {
-                            console.error(err);
+                            // ignore Pokémon already in the database
+                            if (err.code === "SQLITE_CONSTRAINT") {
+                                resolve();
+                                return;
+                            }
+                            reject(err);
                             return;
                         }
-                        console.log(info.envelope);
-                        console.log(info.messageId);
+                        // insert succeeded
+                        newPokemon.push(pokemon.name);
+                        console.log(sql);
+                        resolve();
+                    });
+                });
+            })
+        );
+
+        const transporter = nodemailer.createTransport({
+            sendmail: true,
+            path: "/usr/bin/sendmail",
+        })
+
+        let emailMessage = newPokemon.join('\n');
+
+        if (newPokemon.length > 0) {
+            transporter.sendMail(
+                {
+                    from: "Jordan Hurst <jordan@imlgames.com>",
+                    to: "jordan.barron.hurst@gmail.com",
+                    subject: "New Pokémon added",
+                    text: "New Pokémon have been added to your apps:\n\n" + emailMessage,
+                },
+                (err, info) => {
+                    if (err) {
+                        console.error(err);
+                        return;
                     }
-                )
-            }
-        });
+                    console.log(info.envelope);
+                    console.log(info.messageId);
+                }
+            )
+        }
+
+        return result;
     }
 
     /**
