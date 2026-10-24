@@ -55,6 +55,8 @@ class PokemonAdapter {
 				result = result && !tempName.match(/miraidon-/g);
 				result = result && !tempName.match(/ogerpon-/g);
 				result = result && !tempName.match(/-female-mega/g);
+				result = result && !tempName.match(/-curly-mega/g);
+				result = result && !tempName.match(/-stretchy-mega/g); //for some reason, trying to filter out droopy mega breaks things with no error message
 
 				return result;
 			})
@@ -79,6 +81,8 @@ class PokemonAdapter {
 				result = result && !tempName.match(/koraidon-/g);
 				result = result && !tempName.match(/miraidon-/g);
 				result = result && !tempName.match(/-female-mega/g);
+				result = result && !tempName.match(/-curly-mega/g);
+				result = result && !tempName.match(/-stretchy-mega/g);
 
 				result = result && imageBase['official-artwork']['front_default'];
 
@@ -132,6 +136,7 @@ class PokemonAdapter {
 				pokemon.name = pokemon.name.replace(/paldean-blaze-breed$/g, 'blaze');
 				pokemon.name = pokemon.name.replace(/paldean-aqua-breed$/g, 'aqua');
 				pokemon.name = pokemon.name.replace(/male-mega$/g, 'mega');
+				pokemon.name = pokemon.name.replace(/droopy-mega$/g, 'mega');
 			}
         } else {
 			for (const pokemon of list) {
@@ -146,6 +151,7 @@ class PokemonAdapter {
 				pokemon.name = pokemon.name.replace(/calyrex-shadow$/g, 'calyrex-shadow-rider');
 				pokemon.name = pokemon.name.replace(/oinkologne$/g, 'oinkologne-male');
 				pokemon.name = pokemon.name.replace(/male-mega$/g, 'mega');
+				pokemon.name = pokemon.name.replace(/droopy-mega$/g, 'mega');
 			}
         }
 
